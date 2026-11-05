@@ -154,6 +154,8 @@ h2{font-size:24px;font-weight:700;margin:6px 6px 4px;letter-spacing:-.01em}
 @keyframes draw{to{stroke-dashoffset:0}}
 .done h2{font-family:"Playfair Display",Georgia,serif;font-size:30px}
 .grow{flex:1}
+.jl{margin-top:22px;text-align:center;font-size:12.5px;color:var(--muted);line-height:1.9}
+.jl a{color:var(--ink);text-decoration:none;margin:0 6px;white-space:nowrap}
 .sub.thanks{margin:8px auto;max-width:360px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .foot{text-align:center;color:#9a9aa0;font-size:11.5px;margin-top:26px;letter-spacing:.04em}

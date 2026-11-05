@@ -7,6 +7,10 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 function card(j){const d=document.createElement('div');d.className='job';d.innerHTML=`<div class="ji">${IC[j[2]]}</div><div class="t">${j[0]}</div><div class="m">${j[1]}</div>`;
   d.onclick=()=>{$$('.job').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');S.position=j[0];say('#m1','')};return d}
 ENG.forEach(j=>$('#jobsE').appendChild(card(j)));TEC.forEach(j=>$('#jobsT').appendChild(card(j)));
+/* ?position=<English title> (from a job page) pre-selects that role */
+(function(){try{const p=new URLSearchParams(location.search).get('position');if(!p)return;
+  const all=[...ENG,...TEC];const i=all.findIndex(j=>j[0].toLowerCase()===p.toLowerCase());if(i<0)return;
+  $$('.job')[i].click()}catch(e){}})();
 
 /* ---------- language ---------- */
 const AR={
