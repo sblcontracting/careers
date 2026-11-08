@@ -163,3 +163,4 @@ h2{font-size:24px;font-weight:700;margin:6px 6px 4px;letter-spacing:-.01em}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media (max-width:420px){.job{padding:12px}.job .t{font-size:13.5px}.hero h1{font-size:32px}}
 @media (max-width:330px){.jobs{grid-template-columns:1fr}}
+.row[hidden]{display:none!important}
