@@ -91,6 +91,8 @@ const AR={
  "Uzbek":"أوزبكي",
  "Vietnamese":"فيتنامي",
  "Select your nationality":"اختر جنسيتك",
+ "Search your nationality":"ابحث عن جنسيتك",
+ "No match":"لا توجد نتيجة",
  "Saudi":"سعودي","Non-Saudi":"غير سعودي","Residency status":"وضع الإقامة",
  "Saudi national":"مواطن سعودي","Transferable Iqama":"إقامة قابلة للنقل","Iqama not transferable":"إقامة غير قابلة للنقل","Outside Saudi Arabia":"خارج المملكة",
  "Tell us about your background.":"حدّثنا عن مؤهلاتك وخبرتك.","Highest qualification":"أعلى مؤهل",
@@ -112,7 +114,7 @@ const AR={
 let LANG='en';
 const T=s=>LANG==='ar'&&AR[s]?AR[s]:s;
 const TX='.hero .k,.hero h1,.hero .s,[data-tx],h2,.sub,.tag,.ql,.job .t,.job .m,.seg button,.chip,.btn,.drop b,.drop small,.tg span,.unit,.row>span.grow,.foot,option';
-function applyLang(l){LANG=l;const h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';
+function applyLang(l){LANG=l;try{const nv=$('#natVal');if(nv&&nv.value){$('#natIn').value=T(nv.value);natCheck()}if(!$('#natList').hidden)natDraw()}catch(e){}const h=document.documentElement;h.lang=l;h.dir=l==='ar'?'rtl':'ltr';
   $$(TX).forEach(e=>{if(e.children.length&&!e.matches('.btn'))return;if(e.dataset.en===undefined)e.dataset.en=e.textContent.trim();
     if(e.id==='submit'&&e.disabled)return; if(e.id==='dropT'&&S.file)return; if(e.id==='dropS'&&S.file)return; e.textContent=T(e.dataset.en)});
   $$('input[placeholder]').forEach(e=>{if(e.dataset.enph===undefined)e.dataset.enph=e.placeholder;e.placeholder=T(e.dataset.enph)});
@@ -123,8 +125,29 @@ function applyLang(l){LANG=l;const h=document.documentElement;h.lang=l;h.dir=l==
 function say(sel,en){const m=$(sel);m.dataset.en=en;m.textContent=T(en)}
 
 $$('.seg button,.chip').forEach(b=>b.dataset.v=b.textContent.trim());
-$$('[data-q="nationality"] .seg button').forEach(b=>b.addEventListener('click',()=>{const nr=$('#natRow'),sel=nr.querySelector('select'),on=b.dataset.v==='Non-Saudi';
-  nr.hidden=!on;sel.required=on;if(!on){sel.value='';nr.classList.remove('err')}}));
+const NAT={"Afghan": "Afghanistan أفغانستان", "Algerian": "Algeria الجزائر", "American": "USA United States America أمريكا الولايات المتحدة", "Australian": "Australia أستراليا", "Bahraini": "Bahrain البحرين", "Bangladeshi": "Bangladesh بنغلاديش بنقلاديش", "British": "UK United Kingdom England بريطانيا انجلترا", "Cameroonian": "Cameroon الكاميرون", "Canadian": "Canada كندا", "Chadian": "Chad تشاد", "Chinese": "China الصين", "Comorian": "Comoros جزر القمر", "Djiboutian": "Djibouti جيبوتي", "Dutch": "Netherlands Holland هولندا", "Egyptian": "Egypt مصر", "Emirati": "UAE Emirates الإمارات", "Eritrean": "Eritrea إريتريا", "Ethiopian": "Ethiopia إثيوبيا اثيوبيا", "Filipino": "Philippines الفلبين", "French": "France فرنسا", "German": "Germany ألمانيا", "Ghanaian": "Ghana غانا", "Indian": "India الهند", "Indonesian": "Indonesia إندونيسيا", "Iranian": "Iran إيران", "Iraqi": "Iraq العراق", "Irish": "Ireland إيرلندا ايرلندا", "Italian": "Italy إيطاليا", "Jordanian": "Jordan الأردن", "Kenyan": "Kenya كينيا", "Korean": "Korea كوريا", "Kuwaiti": "Kuwait الكويت", "Lebanese": "Lebanon لبنان", "Libyan": "Libya ليبيا", "Malaysian": "Malaysia ماليزيا", "Malian": "Mali مالي", "Mauritanian": "Mauritania موريتانيا", "Moroccan": "Morocco المغرب", "Myanmar (Burmese)": "Burma Myanmar بورما ميانمار", "Nepali": "Nepal نيبال", "Nigerian": "Nigeria نيجيريا", "Omani": "Oman عمان", "Pakistani": "Pakistan باكستان", "Palestinian": "Palestine فلسطين", "Qatari": "Qatar قطر", "Russian": "Russia روسيا", "Senegalese": "Senegal السنغال", "Somali": "Somalia الصومال", "South African": "South Africa جنوب أفريقيا", "South Sudanese": "South Sudan جنوب السودان", "Spanish": "Spain إسبانيا", "Sri Lankan": "Sri Lanka سريلانكا", "Sudanese": "Sudan السودان", "Syrian": "Syria سوريا", "Tanzanian": "Tanzania تنزانيا", "Thai": "Thailand تايلاند", "Tunisian": "Tunisia تونس", "Turkish": "Turkey تركيا", "Ugandan": "Uganda أوغندا اوغندا", "Ukrainian": "Ukraine أوكرانيا", "Uzbek": "Uzbekistan أوزبكستان", "Vietnamese": "Vietnam فيتنام", "Yemeni": "Yemen اليمن"};
+const natNorm=t=>String(t).toLowerCase().replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/\s+/g,' ').trim();
+const natWords=t=>natNorm(t).split(/[ ()]+/).filter(Boolean).map(w=>w.replace(/^ال(?=.)/,''));
+function natKeys(n){return natWords(n+' '+T(n)+' '+(NAT[n]||'')+' '+(n==='Other'?'اخرى other':''))}
+function natScore(n,q){if(!q.trim())return 1;const ks=natKeys(n),qs=natWords(q);let s=0;
+  const head=[natWords(T(n))[0],natWords(n)[0]];if(qs.length&&head.some(h=>h&&h.startsWith(qs[0])))s+=3;
+  for(const w of qs){if(ks.some(k=>k.startsWith(w)))s+=2;else if(ks.some(k=>k.includes(w)))s+=1;else return 0}return s}
+function natSorted(){const a=Object.keys(NAT).sort((x,y)=>T(x).localeCompare(T(y),LANG));a.push('Other');return a}
+function natDraw(){const q=$('#natIn').value,l=$('#natList');
+  let a=natSorted().map(n=>[n,natScore(n,q)]).filter(x=>x[1]>0);
+  if(q.trim())a.sort((x,y)=>y[1]-x[1]||T(x[0]).localeCompare(T(y[0]),LANG));
+  l.innerHTML=a.length?a.map(([n])=>`<button type="button" data-n="${n}" class="${$('#natVal').value===n?'sel':''}">${T(n)}</button>`).join(''):`<div class="none">${T('No match')}</div>`;
+  l.querySelectorAll('button').forEach(b=>b.onmousedown=e=>{e.preventDefault();natPick(b.dataset.n)})}
+function natPick(n){$('#natVal').value=n;const i=$('#natIn');i.value=T(n);i.setCustomValidity('');$('#natRow').classList.remove('err');$('#natList').hidden=true;i.blur()}
+function natCheck(){const i=$('#natIn');if(!i.required){i.setCustomValidity('');return}
+  i.setCustomValidity($('#natVal').value&&i.value===T($('#natVal').value)?'':'Choose from the list')}
+(()=>{const i=$('#natIn');
+  i.addEventListener('focus',()=>{$('#natList').hidden=false;natDraw()});
+  i.addEventListener('input',()=>{$('#natVal').value='';natCheck();$('#natList').hidden=false;natDraw()});
+  i.addEventListener('blur',()=>setTimeout(()=>{$('#natList').hidden=true;natCheck()},150));
+  i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const f=$('#natList button');if(f)natPick(f.dataset.n)}});})();
+$$('[data-q="nationality"] .seg button').forEach(b=>b.addEventListener('click',()=>{const on=b.dataset.v==='Non-Saudi',i=$('#natIn');
+  $('#natRow').hidden=!on;i.required=on;if(!on){i.value='';$('#natVal').value='';$('#natList').hidden=true;$('#natRow').classList.remove('err')}natCheck()}));
 $$('.q').forEach(q=>{const k=q.dataset.q,multi=q.hasAttribute('data-multi');
   q.querySelectorAll('button').forEach(b=>b.onclick=()=>{q.classList.remove('err');
     if(multi){b.classList.toggle('sel');S[k]=[...q.querySelectorAll('.sel')].map(x=>x.dataset.v)}

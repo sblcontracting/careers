@@ -164,3 +164,10 @@ h2{font-size:24px;font-weight:700;margin:6px 6px 4px;letter-spacing:-.01em}
 @media (max-width:420px){.job{padding:12px}.job .t{font-size:13.5px}.hero h1{font-size:32px}}
 @media (max-width:330px){.jobs{grid-template-columns:1fr}}
 .row[hidden]{display:none!important}
+.natlist{margin:4px 12px 10px;max-height:240px;overflow:auto;background:var(--cell);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px rgba(60,45,20,.10);-webkit-overflow-scrolling:touch}
+.natlist button{display:block;width:100%;text-align:start;border:0;background:transparent;font:inherit;font-size:15px;color:var(--text);padding:11px 16px;border-bottom:1px solid var(--line);cursor:pointer}
+.natlist button:last-child{border-bottom:0}
+.natlist button:hover,.natlist button.sel{background:linear-gradient(160deg,rgba(232,205,140,.35),rgba(176,138,46,.18))}
+.natlist .none{padding:12px 16px;color:var(--muted)}
+.natlist[hidden]{display:none}
+#natIn::-webkit-search-cancel-button{display:none}
