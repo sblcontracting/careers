@@ -60,6 +60,7 @@ h2{font-size:24px;font-weight:700;margin:6px 6px 4px;letter-spacing:-.01em}
 .row.file .ftxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:16px}
 .row.file small{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row.file .fbtn{flex:none;font-size:13px;font-weight:600;padding:7px 11px;border-radius:999px;background:var(--field);color:var(--ink);cursor:pointer}
+.row.file button.fbtn{border:0;font-family:inherit}
 .row.file .fbtn.cam{background:linear-gradient(160deg,var(--gold2),var(--gold3));color:#111}
 .row.file small{white-space:normal}
 .row.file #iqThumb{width:44px;height:44px;border-radius:8px;object-fit:cover;flex:none;border:1px solid var(--line)}
@@ -94,6 +95,22 @@ h2{font-size:24px;font-weight:700;margin:6px 6px 4px;letter-spacing:-.01em}
 .spin{display:inline-block;width:18px;height:18px;border:2px solid rgba(0,0,0,.25);border-top-color:#111;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px;margin-inline-end:8px}
 @keyframes sp{to{transform:rotate(360deg)}}
 [hidden]{display:none!important}
+.camx{position:fixed;inset:0;z-index:50;background:#000;overflow:hidden;font-family:inherit}
+.camx video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.camx .frame{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:88vw;max-width:560px;aspect-ratio:1.586;border-radius:16px;
+  box-shadow:0 0 0 200vmax rgba(0,0,0,.58);outline:1.5px solid rgba(232,205,140,.55)}
+.camx .frame i{position:absolute;width:34px;height:34px;border:4px solid var(--gold2)}
+.camx .frame .c1{top:-3px;left:-3px;border-right:0;border-bottom:0;border-top-left-radius:16px}
+.camx .frame .c2{top:-3px;right:-3px;border-left:0;border-bottom:0;border-top-right-radius:16px}
+.camx .frame .c3{bottom:-3px;left:-3px;border-right:0;border-top:0;border-bottom-left-radius:16px}
+.camx .frame .c4{bottom:-3px;right:-3px;border-left:0;border-top:0;border-bottom-right-radius:16px}
+.camhint{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top) + 28px);text-align:center;color:#fff;padding:0 24px;display:flex;flex-direction:column;gap:4px}
+.camhint b{font-size:18px}.camhint span{font-size:13px;color:#d6d0c4}
+.cambar{position:absolute;left:0;right:0;bottom:0;padding:22px 26px calc(env(safe-area-inset-bottom) + 28px);display:flex;align-items:center;justify-content:space-between}
+.camtxt{min-width:70px;border:0;background:none;color:#fff;font:inherit;font-size:16px;cursor:pointer}
+.shutter{width:76px;height:76px;border-radius:50%;border:5px solid var(--gold2);background:#fff;box-shadow:0 0 0 4px rgba(0,0,0,.35);cursor:pointer}
+.shutter:active{transform:scale(.94)}
+.camwait{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:15px;pointer-events:none}
 .note{background:rgba(201,162,74,.12);border:1px solid rgba(201,162,74,.35);color:var(--ink);border-radius:14px;padding:10px 12px;font-size:13px;margin:0 0 14px}
 html[lang=ar] body{font-family:Changa,Inter,system-ui,sans-serif}
 html[lang=ar] .hero h1,html[lang=ar] .done h2{font-family:Changa,serif;font-weight:700}
@@ -131,7 +148,7 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       <div class="row" id="r-job"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><select id="job" required><option value="" disabled selected data-t="jobPh">Your job</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
       <div class="row" id="r-jobOther" hidden><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><input id="jobOther" data-ph="jobOtherPh" placeholder="Write your job"></div>
       <div class="row" id="r-nat"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg></span><select id="nationality" required><option value="" disabled selected data-t="natPh">Nationality</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
-      <div class="row file" id="r-iqamaPhoto"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span class="ftxt"><span data-t="iqPhoto">Photo of your Iqama</span><small id="iqPhotoName" data-t="iqPhotoHint">Take a photo or upload one</small></span><img id="iqThumb" alt="" hidden><label class="fbtn cam"><span data-t="shoot">Camera</span><input id="iqCam" type="file" accept="image/*" capture="environment" hidden></label><label class="fbtn"><span data-t="choose">Upload</span><input id="iqamaPhoto" type="file" accept="image/*,application/pdf" hidden></label></div>
+      <div class="row file" id="r-iqamaPhoto"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span class="ftxt"><span data-t="iqPhoto">Photo of your Iqama</span><small id="iqPhotoName" data-t="iqPhotoHint">Take a photo or upload one</small></span><img id="iqThumb" alt="" hidden><button type="button" class="fbtn cam" id="camBtn"><span data-t="shoot">Camera</span></button><input id="iqCam" type="file" accept="image/*" capture="environment" hidden><label class="fbtn"><span data-t="choose">Upload</span><input id="iqamaPhoto" type="file" accept="image/*,application/pdf" hidden></label></div>
       <div class="row" id="r-phone"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></span><input id="phone" type="tel" inputmode="tel" maxlength="10" data-ph="phonePh" placeholder="Mobile 05XXXXXXXX"></div>
     </div>
     <div class="msg" id="m1"></div>
@@ -206,6 +223,18 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
   <div class="foot">Smart Building Lines Contracting Co. · Riyadh</div>
 </div>
 
+<div class="camx" id="camx" hidden>
+  <video id="camv" playsinline muted autoplay></video>
+  <div class="frame" id="camf"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>
+  <div class="camhint"><b data-t="camHint">Place the Iqama inside the frame</b><span data-t="camHint2">Good light, no glare, all four corners inside</span></div>
+  <div class="cambar">
+    <button type="button" class="camtxt" id="camClose" data-t="cancel">Cancel</button>
+    <button type="button" class="shutter" id="camShot" aria-label="Take the photo"></button>
+    <span class="camtxt"></span>
+  </div>
+  <div class="camwait" id="camWait" data-t="camOpening">Opening the camera…</div>
+</div>
+
 <script>
 (function () {
   var ENDPOINT = document.documentElement.dataset.endpoint || '';
@@ -215,7 +244,8 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       title: 'الموظفون والسيارات', tagline: 'لموظفي SBL فقط · دقيقتان', step: 'الخطوة', of: 'من',
       offline: 'معاينة: النموذج غير مرتبط بجدول البيانات بعد، فلا تُحفظ الإجابات.',
       s1h: 'بياناتك', s1p: 'اكتب اسمك الرباعي كما هو مكتوب في الإقامة.', namePh: 'الاسم الرباعي كما في الإقامة',
-      jobPh: 'الوظيفة', jobOtherPh: 'اكتب وظيفتك', natPh: 'الجنسية', iqamaPh: 'رقم الإقامة أو الهوية (اختياري)', iqPhoto: 'صورة الإقامة', iqPhotoHint: 'صوّر الإقامة أو ارفع صورتها', choose: 'رفع', shoot: 'تصوير',
+      jobPh: 'الوظيفة', jobOtherPh: 'اكتب وظيفتك', natPh: 'الجنسية', iqamaPh: 'رقم الإقامة أو الهوية (اختياري)', iqPhoto: 'صورة الإقامة', iqPhotoHint: 'صوّر الإقامة أو ارفع صورتها', choose: 'رفع', shoot: 'تصوير', cancel: 'إلغاء', camHint: 'ضع الإقامة داخل الإطار', camHint2: 'في مكان مضيء، بدون لمعان، والزوايا الأربع داخل الإطار', camOpening: 'جارٍ فتح الكاميرا…',
+      eCam: 'لم يُسمح باستخدام الكاميرا. اسمح للمتصفح باستخدامها، أو صوّر بالزر «رفع».',
       eIqBlur: 'الصورة غير واضحة. صوّر الإقامة مرة أخرى في مكان مضيء وثبّت الجوال.', eIqDark: 'الصورة مظلمة. صوّر الإقامة في مكان مضيء.', eIqSmall: 'الصورة صغيرة. صوّر الإقامة من مسافة أقرب.', change: 'تغيير', phonePh: 'رقم الجوال 05XXXXXXXX',
       s2h: 'مكان العمل', s2p: 'المشروع الذي تعمل فيه حاليًا.', projPh: 'المشروع', projOtherPh: 'اكتب اسم المشروع أو الموقع', cityPh: 'المدينة', bossPh: 'المسؤول المباشر (اختياري)',
       s3h: 'نظام الشركة', s3p: 'لتجهيز حسابك في نظام الشركة لتسجيل الحضور ورفع الفواتير.',
@@ -233,7 +263,7 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
   };
   var EN = {
     otherOpt: 'Other (write it)', otherProj: 'Not listed (write it)', otherCar: 'Another type', sending: 'Sending',
-    eName: 'Write your full name (at least three parts).', eJob: 'Choose your job.', eNat: 'Choose your nationality.', eIqama: 'The Iqama number has 10 digits.', eIqPhoto: 'Attach a clear photo of your Iqama.', eIqBig: 'The file is too big; choose a photo.', eIqBlur: 'The photo is blurry. Take it again in good light and hold the phone still.', eIqDark: 'The photo is too dark. Take it in good light.', eIqSmall: 'The photo is too small. Take it closer.', change: 'Change', ePhone: 'The mobile starts with 05 and has 10 digits.',
+    eName: 'Write your full name (at least three parts).', eJob: 'Choose your job.', eNat: 'Choose your nationality.', eIqama: 'The Iqama number has 10 digits.', eIqPhoto: 'Attach a clear photo of your Iqama.', eIqBig: 'The file is too big; choose a photo.', eIqBlur: 'The photo is blurry. Take it again in good light and hold the phone still.', eIqDark: 'The photo is too dark. Take it in good light.', eIqSmall: 'The photo is too small. Take it closer.', eCam: 'The camera was not allowed. Allow it for this browser, or use Upload.', change: 'Change', ePhone: 'The mobile starts with 05 and has 10 digits.',
     eProject: 'Choose the project.', eHasCar: 'Say if you have a car.', eCar: 'Choose the car type and write its plate number.', eFleet: 'Write the company car number painted on the car, e.g. 091.', eFuel: 'Choose the fuel.', eOdo: 'Write the odometer reading in km.',
     eSend: 'It did not send. Check the internet and try again.', found: 'Found', names: { you: 'About you', work: 'Work', system: 'System', car: 'Car', done: 'Done' }
   };
@@ -330,18 +360,50 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       fr.readAsDataURL(f); return;
     }
     var img = new Image(), url = URL.createObjectURL(f);
-    img.onload = function () {
-      var k = Math.min(1, 1600 / Math.max(img.width, img.height)), c = document.createElement('canvas');
-      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      var d = c.toDataURL('image/jpeg', 0.82); URL.revokeObjectURL(url);
-      var problem = photoProblem(c);
-      if (problem) { bad(problem, d); return; }
-      iqFile = { name: (f.name || 'iqama').replace(/\.[^.]+$/, '') + '.jpg', type: 'image/jpeg', data: d.split(',')[1] }; show(d);
-    };
+    img.onload = function () { URL.revokeObjectURL(url); keep(img, img.width, img.height, f.name); };
     img.onerror = function () { URL.revokeObjectURL(url); bad('eIqPhoto', ''); };
     img.src = url;
   }
+  function keep(src, sw, sh, name, sx, sy) {
+    var row = $('r-iqamaPhoto');
+    var k = Math.min(1, 1600 / Math.max(sw, sh)), c = document.createElement('canvas');
+    c.width = Math.round(sw * k); c.height = Math.round(sh * k);
+    c.getContext('2d').drawImage(src, sx || 0, sy || 0, sw, sh, 0, 0, c.width, c.height);
+    var d = c.toDataURL('image/jpeg', 0.82), problem = photoProblem(c);
+    $('iqThumb').hidden = false; $('iqThumb').src = d;
+    if (problem) { iqFile = null; row.classList.remove('has'); row.classList.add('err'); $('iqPhotoName').textContent = tx(problem); return; }
+    iqFile = { name: String(name || 'iqama').replace(/\.[^.]+$/, '') + '.jpg', type: 'image/jpeg', data: d.split(',')[1] };
+    row.classList.add('has'); row.classList.remove('err'); $('iqPhotoName').textContent = '✓ ' + tx('iqPhoto');
+  }
+
+  // The camera inside the page, with the card frame; the photo is cut to the frame.
+  var camStream = null;
+  function camStop() {
+    if (camStream) camStream.getTracks().forEach(function (t) { t.stop(); });
+    camStream = null; $('camx').hidden = true; document.body.style.overflow = '';
+  }
+  $('camBtn').addEventListener('click', function () {
+    if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) { $('iqCam').click(); return; }
+    $('camx').hidden = false; $('camWait').hidden = false; document.body.style.overflow = 'hidden';
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false })
+      .then(function (st) { camStream = st; var v = $('camv'); v.srcObject = st; v.play(); v.onplaying = function () { $('camWait').hidden = true; }; })
+      .catch(function () {
+        camStop(); var row = $('r-iqamaPhoto'); row.classList.add('err'); $('iqPhotoName').textContent = tx('eCam');
+      });
+  });
+  $('camClose').addEventListener('click', camStop);
+  $('camShot').addEventListener('click', function () {
+    var v = $('camv'); if (!v.videoWidth) return;
+    // Where the frame sits on the video (the video fills the screen, cut to cover).
+    var vr = v.getBoundingClientRect(), fr = $('camf').getBoundingClientRect();
+    var sc = Math.max(vr.width / v.videoWidth, vr.height / v.videoHeight);
+    var ox = (vr.width - v.videoWidth * sc) / 2, oy = (vr.height - v.videoHeight * sc) / 2;
+    var pad = 0.04 * fr.width; // a little room around the card
+    var sx = Math.max(0, (fr.left - vr.left - ox - pad) / sc), sy = Math.max(0, (fr.top - vr.top - oy - pad) / sc);
+    var sw = Math.min(v.videoWidth - sx, (fr.width + 2 * pad) / sc), sh = Math.min(v.videoHeight - sy, (fr.height + 2 * pad) / sc);
+    keep(v, sw, sh, 'iqama-camera', sx, sy);
+    camStop();
+  });
   $('iqamaPhoto').addEventListener('change', pick);
   $('iqCam').addEventListener('change', pick);
   $('job').addEventListener('change', function () { $('r-jobOther').hidden = this.value !== '__other'; $('r-job').classList.remove('err'); });
