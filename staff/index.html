@@ -245,12 +245,14 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
 
 <script>
 (function () {
-  var ENDPOINT = document.documentElement.dataset.endpoint || '';
+  // ?preview=1: a look-through copy for the office. Next works without filling in, and nothing is sent.
+  var PREVIEW = /[?&]preview=1(&|$)/.test(location.search);
+  var DATA_URL = document.documentElement.dataset.endpoint || '', ENDPOINT = PREVIEW ? '' : DATA_URL;
   var T = {
     en: {}, // English is the page as written
     ar: {
       title: 'الموظفون والسيارات', tagline: 'لموظفي SBL فقط · دقيقتان', step: 'الخطوة', of: 'من',
-      offline: 'معاينة: النموذج غير مرتبط بجدول البيانات بعد، فلا تُحفظ الإجابات.',
+      offline: 'معاينة: النموذج غير مرتبط بجدول البيانات بعد، فلا تُحفظ الإجابات.', previewNote: 'نسخة معاينة: تنقّل بين الصفحات بدون تعبئة، ولا تُرسل أي بيانات.',
       s1h: 'بياناتك', s1p: 'اكتب اسمك الرباعي كما هو مكتوب في الإقامة.', n1Ph: 'الاسم الأول', n2Ph: 'اسم الأب', n3Ph: 'اسم الجد', n4Ph: 'اسم العائلة',
       jobPh: 'الوظيفة', jobOtherPh: 'اكتب وظيفتك', natPh: 'الجنسية', iqamaPh: 'رقم الإقامة أو الهوية (اختياري)', iqPhoto: 'صورة الإقامة', iqPhotoHint: 'صوّر الإقامة أو ارفع صورتها', iqScan: 'جارٍ التحقق من الإقامة…', iqOk: 'تم التعرف على الإقامة', eNotIqama: 'هذه ليست صورة إقامة. صوّر الإقامة نفسها داخل الإطار.', eIqWait: 'انتظر حتى ينتهي التحقق من صورة الإقامة.', eIqPart: 'الإقامة غير ظاهرة كاملة. صوّر البطاقة كلها داخل الإطار والزوايا الأربع ظاهرة.', eIqUnclear: 'الاسم أو رقم الإقامة غير واضح. صوّرها في مكان مضيء وبدون لمعان.', choose: 'رفع', shoot: 'تصوير', cancel: 'إلغاء', camHint: 'ضع الإقامة داخل الإطار', camHint2: 'في مكان مضيء، بدون لمعان، والزوايا الأربع داخل الإطار', camOpening: 'جارٍ فتح الكاميرا…',
       eCam: 'لم يُسمح باستخدام الكاميرا. اسمح للمتصفح باستخدامها، أو صوّر بالزر «رفع».',
@@ -320,14 +322,15 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
     var oc = document.createElement('option'); oc.value = '__other'; oc.dataset.other = 'otherCar'; oc.textContent = tx('otherCar'); car.appendChild(oc);
   }
   useLists(L);
-  if (ENDPOINT) {
-    fetch(ENDPOINT + '?lists=1', { credentials: 'omit', redirect: 'follow' })
+  if (DATA_URL) {
+    // The preview still shows the real lists; it only never sends.
+    fetch(DATA_URL + '?lists=1', { credentials: 'omit', redirect: 'follow' })
       .then(function (r) { return r.json(); })
       .then(function (j) { if (j && j.jobs) useLists(j); })
       .catch(function () { $('offline').hidden = false; });
-  } else {
-    $('offline').hidden = false;
   }
+  if (!ENDPOINT) $('offline').hidden = false;
+  if (PREVIEW) { $('offline').dataset.t = 'previewNote'; orig.previewNote = 'Preview copy: move through the pages without filling in; nothing is sent.'; }
 
   ['n1', 'n2', 'n3', 'n4'].forEach(function (k) { $(k).addEventListener('input', function () { $('r-name').classList.remove('err'); }); });
   var fullName = function () { return ['n1', 'n2', 'n3', 'n4'].map(function (k) { return $(k).value.trim().replace(/\s+/g, ' '); }).filter(Boolean).join(' '); };
@@ -499,12 +502,12 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
     $('slName').textContent = (lang === 'ar' ? T.ar.names : EN.names)[steps[step].dataset.name];
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  document.querySelectorAll('[data-next]').forEach(function (b) { b.addEventListener('click', function () { if (check(step)) go(step + 1); }); });
+  document.querySelectorAll('[data-next]').forEach(function (b) { b.addEventListener('click', function () { if (PREVIEW || check(step)) go(step + 1); }); });
   document.querySelectorAll('[data-back]').forEach(function (b) { b.addEventListener('click', function () { go(step - 1, true); }); });
 
   $('send').addEventListener('click', function () {
     // Every step is checked here; the first one with a problem opens with its note.
-    for (var k = 0; k < 4; k++) if (!check(k)) { if (k !== step) go(k, true); return; }
+    if (!PREVIEW) for (var k = 0; k < 4; k++) if (!check(k)) { if (k !== step) go(k, true); return; }
     var name = fullName(), ci = $('car').value, car = L.cars[Number(ci)], noCar = val.hasCar === 'None';
     var data = {
       name: name,
