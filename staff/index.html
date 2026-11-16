@@ -56,6 +56,13 @@ h2{font-size:24px;font-weight:700;margin:6px 6px 4px;letter-spacing:-.01em}
 .row select option{color:#111;background:#fff}
 .row select:valid{color:#111;font-weight:500}
 .row .chev{color:#a1a1a6;flex:none}
+.row.file{cursor:pointer;padding-top:10px;padding-bottom:10px}
+.row.file .ftxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:16px}
+.row.file small{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row.file .fbtn{flex:none;font-size:13.5px;font-weight:600;padding:7px 14px;border-radius:999px;background:var(--field);color:var(--ink)}
+.row.file #iqThumb{width:44px;height:44px;border-radius:8px;object-fit:cover;flex:none;border:1px solid var(--line)}
+.row.file.has .fbtn{background:rgba(46,125,79,.12);color:var(--ok)}
+.row.err.file small{color:var(--danger)}
 .row.err input,.row.err select{color:var(--danger)}
 .row.err .ico{background:var(--danger);color:#fff}
 .row .badge{font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:999px;flex:none}
@@ -122,7 +129,7 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       <div class="row" id="r-job"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><select id="job" required><option value="" disabled selected data-t="jobPh">Your job</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
       <div class="row" id="r-jobOther" hidden><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><input id="jobOther" data-ph="jobOtherPh" placeholder="Write your job"></div>
       <div class="row" id="r-nat"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg></span><select id="nationality" required><option value="" disabled selected data-t="natPh">Nationality</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
-      <div class="row" id="r-iqama"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.4 1.8-2 3-2s2.4.6 3 2"/><path d="M15 10h3M15 13h3"/></svg></span><input id="iqama" inputmode="numeric" maxlength="10" data-ph="iqamaPh" placeholder="Iqama / ID no. (optional)"></div>
+      <label class="row file" id="r-iqamaPhoto"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span class="ftxt"><span data-t="iqPhoto">Photo of your Iqama</span><small id="iqPhotoName" data-t="iqPhotoHint">Take a photo or choose one</small></span><img id="iqThumb" alt="" hidden><span class="fbtn" data-t="choose">Upload</span><input id="iqamaPhoto" type="file" accept="image/*,application/pdf" hidden></label>
       <div class="row" id="r-phone"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></span><input id="phone" type="tel" inputmode="tel" maxlength="10" data-ph="phonePh" placeholder="Mobile 05XXXXXXXX"></div>
     </div>
     <div class="msg" id="m1"></div>
@@ -206,7 +213,7 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       title: 'الموظفون والسيارات', tagline: 'لموظفي SBL فقط · دقيقتان', step: 'الخطوة', of: 'من',
       offline: 'معاينة: النموذج غير مرتبط بجدول البيانات بعد، فلا تُحفظ الإجابات.',
       s1h: 'بياناتك', s1p: 'اكتب اسمك الرباعي كما هو مكتوب في الإقامة.', namePh: 'الاسم الرباعي كما في الإقامة',
-      jobPh: 'الوظيفة', jobOtherPh: 'اكتب وظيفتك', natPh: 'الجنسية', iqamaPh: 'رقم الإقامة أو الهوية (اختياري)', phonePh: 'رقم الجوال 05XXXXXXXX',
+      jobPh: 'الوظيفة', jobOtherPh: 'اكتب وظيفتك', natPh: 'الجنسية', iqamaPh: 'رقم الإقامة أو الهوية (اختياري)', iqPhoto: 'صورة الإقامة', iqPhotoHint: 'التقط صورة أو اختر صورة', choose: 'رفع', change: 'تغيير', phonePh: 'رقم الجوال 05XXXXXXXX',
       s2h: 'مكان العمل', s2p: 'المشروع الذي تعمل فيه حاليًا.', projPh: 'المشروع', projOtherPh: 'اكتب اسم المشروع أو الموقع', cityPh: 'المدينة', bossPh: 'المسؤول المباشر (اختياري)',
       s3h: 'نظام الشركة', s3p: 'لتجهيز حسابك في نظام الشركة لتسجيل الحضور ورفع الفواتير.',
       no: 'لا', yes: 'نعم', dontKnow: 'لا أعلم',
@@ -216,14 +223,14 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       fuelPayQ: 'طريقة دفع الوقود', aldrees: 'بطاقة الدريس', fromCustody: 'من العهدة', ownPocket: 'أدفع ثم أطالب', other: 'أخرى',
       odoPh: 'قراءة العداد الآن (كم)', notesPh: 'ملاحظات أخرى (اختياري)', back: 'رجوع', next: 'التالي', send: 'إرسال', sending: 'جارٍ الإرسال',
       thanks: 'شكرًا لك', again: 'تعبئة البيانات لشخص آخر', otherOpt: 'أخرى (اكتبها)', otherProj: 'غير موجود (اكتبه)', otherCar: 'نوع آخر',
-      eName: 'اكتب اسمك الرباعي (ثلاثة أجزاء على الأقل).', eJob: 'اختر وظيفتك.', eNat: 'اختر الجنسية.', eIqama: 'رقم الإقامة مكوّن من 10 أرقام.', ePhone: 'رقم الجوال يبدأ بـ 05 ومكوّن من 10 أرقام.',
+      eName: 'اكتب اسمك الرباعي (ثلاثة أجزاء على الأقل).', eJob: 'اختر وظيفتك.', eNat: 'اختر الجنسية.', eIqama: 'رقم الإقامة مكوّن من 10 أرقام.', eIqPhoto: 'أرفق صورة واضحة للإقامة.', eIqBig: 'الملف كبير جدًا، اختر صورة.', ePhone: 'رقم الجوال يبدأ بـ 05 ومكوّن من 10 أرقام.',
       eProject: 'اختر المشروع.', eHasCar: 'حدّد ما إذا كانت لديك سيارة.', eCar: 'اختر نوع السيارة واكتب رقم لوحتها.', eFleet: 'اكتب رقم السيارة في الشركة المكتوب عليها، مثل 091.', eFuel: 'اختر نوع الوقود.', eOdo: 'اكتب قراءة العداد بالكيلومتر.',
       eSend: 'لم تُرسل البيانات. تحقّق من الاتصال بالإنترنت وأعد المحاولة.', found: 'موجود', names: { you: 'بياناتك', work: 'مكان العمل', system: 'النظام', car: 'السيارة', done: 'تم' }
     }
   };
   var EN = {
     otherOpt: 'Other (write it)', otherProj: 'Not listed (write it)', otherCar: 'Another type', sending: 'Sending',
-    eName: 'Write your full name (at least three parts).', eJob: 'Choose your job.', eNat: 'Choose your nationality.', eIqama: 'The Iqama number has 10 digits.', ePhone: 'The mobile starts with 05 and has 10 digits.',
+    eName: 'Write your full name (at least three parts).', eJob: 'Choose your job.', eNat: 'Choose your nationality.', eIqama: 'The Iqama number has 10 digits.', eIqPhoto: 'Attach a clear photo of your Iqama.', eIqBig: 'The file is too big; choose a photo.', change: 'Change', ePhone: 'The mobile starts with 05 and has 10 digits.',
     eProject: 'Choose the project.', eHasCar: 'Say if you have a car.', eCar: 'Choose the car type and write its plate number.', eFleet: 'Write the company car number painted on the car, e.g. 091.', eFuel: 'Choose the fuel.', eOdo: 'Write the odometer reading in km.',
     eSend: 'It did not send. Check the internet and try again.', found: 'Found', names: { you: 'About you', work: 'Work', system: 'System', car: 'Car', done: 'Done' }
   };
@@ -275,13 +282,38 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
   if (ENDPOINT) {
     fetch(ENDPOINT + '?lists=1', { credentials: 'omit', redirect: 'follow' })
       .then(function (r) { return r.json(); })
-      .then(function (j) { if (j && j.employees) useLists(j); })
+      .then(function (j) { if (j && j.jobs) useLists(j); })
       .catch(function () { $('offline').hidden = false; });
   } else {
     $('offline').hidden = false;
   }
 
   $('name').addEventListener('input', function () { $('r-name').classList.remove('err'); });
+  var iqFile = null; // { name, type, data (base64) }
+  $('iqamaPhoto').addEventListener('change', function () {
+    var f = this.files && this.files[0]; if (!f) return;
+    var row = $('r-iqamaPhoto'), show = function (thumb) {
+      row.classList.add('has'); row.classList.remove('err');
+      $('iqPhotoName').textContent = f.name; row.querySelector('.fbtn').textContent = tx('change');
+      $('iqThumb').hidden = !thumb; if (thumb) $('iqThumb').src = thumb;
+    };
+    if (f.type === 'application/pdf') {
+      if (f.size > 6e6) { iqFile = null; row.classList.add('err'); $('iqPhotoName').textContent = tx('eIqBig'); return; }
+      var fr = new FileReader();
+      fr.onload = function () { iqFile = { name: f.name, type: f.type, data: String(fr.result).split(',')[1] }; show(''); };
+      fr.readAsDataURL(f); return;
+    }
+    var img = new Image(), url = URL.createObjectURL(f);
+    img.onload = function () {
+      var k = Math.min(1, 1600 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      var d = c.toDataURL('image/jpeg', 0.82); URL.revokeObjectURL(url);
+      iqFile = { name: f.name.replace(/\.[^.]+$/, '') + '.jpg', type: 'image/jpeg', data: d.split(',')[1] }; show(d);
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); iqFile = null; row.classList.add('err'); $('iqPhotoName').textContent = tx('eIqPhoto'); };
+    img.src = url;
+  });
   $('job').addEventListener('change', function () { $('r-jobOther').hidden = this.value !== '__other'; $('r-job').classList.remove('err'); });
   $('project').addEventListener('change', function () { $('r-projectOther').hidden = this.value !== '__other'; $('r-project').classList.remove('err'); });
   $('car').addEventListener('change', function () { $('r-car').classList.remove('err'); });
@@ -308,8 +340,7 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       if (err('r-name', $('name').value.trim().split(/\s+/).filter(Boolean).length < 3)) note('eName');
       if (err('r-job', !$('job').value || ($('job').value === '__other' && !$('jobOther').value.trim()))) note('eJob');
       if (err('r-nat', !$('nationality').value)) note('eNat');
-      var iq = $('iqama').value.trim();
-      if (err('r-iqama', iq && !/^[12]\d{9}$/.test(iq))) note('eIqama');
+      if (err('r-iqamaPhoto', !iqFile)) note('eIqPhoto');
       if (err('r-phone', !/^05\d{8}$/.test($('phone').value.trim()))) note('ePhone');
     }
     if (i === 1 && err('r-project', !$('project').value || ($('project').value === '__other' && !$('projectOther').value.trim()))) note('eProject');
@@ -336,23 +367,24 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
     $('slName').textContent = (lang === 'ar' ? T.ar.names : EN.names)[steps[step].dataset.name];
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  document.querySelectorAll('[data-next]').forEach(function (b) { b.addEventListener('click', function () { if (check(step)) go(step + 1); }); });
+  document.querySelectorAll('[data-next]').forEach(function (b) { b.addEventListener('click', function () { go(step + 1); }); });
   document.querySelectorAll('[data-back]').forEach(function (b) { b.addEventListener('click', function () { go(step - 1, true); }); });
 
   $('send').addEventListener('click', function () {
-    if (!check(3)) return;
+    // Every step is checked here; the first one with a problem opens with its note.
+    for (var k = 0; k < 4; k++) if (!check(k)) { if (k !== step) go(k, true); return; }
     var name = $('name').value.trim().replace(/\s+/g, ' '), ci = $('car').value, car = L.cars[Number(ci)], noCar = val.hasCar === 'None';
     var data = {
       name: name,
       job: $('job').value === '__other' ? $('jobOther').value.trim() : $('job').value,
       nationality: $('nationality').value === '__other' ? 'Other' : $('nationality').value,
-      iqama: $('iqama').value.trim(), phone: $('phone').value.trim(),
+      phone: $('phone').value.trim(),
       project: $('project').value === '__other' ? $('projectOther').value.trim() : $('project').value,
       city: $('city').value === '__other' ? 'Other' : $('city').value, boss: $('boss').value.trim(),
       account: val.account || '', email: $('email').value.trim(), custody: val.custody || '',
       hasCar: val.hasCar || '', car: noCar ? '' : (ci === '__other' ? 'Other' : (car ? car.label : '')),
       plate: noCar ? '' : $('plate').value.trim(), fleet: val.hasCar === 'Company' ? $('fleet').value.trim() : '', fuel: noCar ? '' : (val.fuel || ''), fuelPay: noCar ? '' : (val.fuelPay || ''),
-      odometer: noCar ? '' : $('odometer').value.trim(), notes: $('notes').value.trim(), lang: lang
+      odometer: noCar ? '' : $('odometer').value.trim(), notes: $('notes').value.trim(), lang: lang, iqamaPhoto: iqFile
     };
     var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spin"></span>' + tx('sending');
     var done = function () { $('doneText').textContent = data.name + ' · ' + data.project + (data.car ? ' · ' + data.car : ''); go(4); };
