@@ -59,7 +59,9 @@ h2{font-size:24px;font-weight:700;margin:6px 6px 4px;letter-spacing:-.01em}
 .row.file{cursor:pointer;padding-top:10px;padding-bottom:10px}
 .row.file .ftxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;font-size:16px}
 .row.file small{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row.file .fbtn{flex:none;font-size:13.5px;font-weight:600;padding:7px 14px;border-radius:999px;background:var(--field);color:var(--ink)}
+.row.file .fbtn{flex:none;font-size:13px;font-weight:600;padding:7px 11px;border-radius:999px;background:var(--field);color:var(--ink);cursor:pointer}
+.row.file .fbtn.cam{background:linear-gradient(160deg,var(--gold2),var(--gold3));color:#111}
+.row.file small{white-space:normal}
 .row.file #iqThumb{width:44px;height:44px;border-radius:8px;object-fit:cover;flex:none;border:1px solid var(--line)}
 .row.file.has .fbtn{background:rgba(46,125,79,.12);color:var(--ok)}
 .row.err.file small{color:var(--danger)}
@@ -129,7 +131,7 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       <div class="row" id="r-job"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><select id="job" required><option value="" disabled selected data-t="jobPh">Your job</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
       <div class="row" id="r-jobOther" hidden><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><input id="jobOther" data-ph="jobOtherPh" placeholder="Write your job"></div>
       <div class="row" id="r-nat"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg></span><select id="nationality" required><option value="" disabled selected data-t="natPh">Nationality</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
-      <label class="row file" id="r-iqamaPhoto"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span class="ftxt"><span data-t="iqPhoto">Photo of your Iqama</span><small id="iqPhotoName" data-t="iqPhotoHint">Take a photo or choose one</small></span><img id="iqThumb" alt="" hidden><span class="fbtn" data-t="choose">Upload</span><input id="iqamaPhoto" type="file" accept="image/*,application/pdf" hidden></label>
+      <div class="row file" id="r-iqamaPhoto"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span class="ftxt"><span data-t="iqPhoto">Photo of your Iqama</span><small id="iqPhotoName" data-t="iqPhotoHint">Take a photo or upload one</small></span><img id="iqThumb" alt="" hidden><label class="fbtn cam"><span data-t="shoot">Camera</span><input id="iqCam" type="file" accept="image/*" capture="environment" hidden></label><label class="fbtn"><span data-t="choose">Upload</span><input id="iqamaPhoto" type="file" accept="image/*,application/pdf" hidden></label></div>
       <div class="row" id="r-phone"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></span><input id="phone" type="tel" inputmode="tel" maxlength="10" data-ph="phonePh" placeholder="Mobile 05XXXXXXXX"></div>
     </div>
     <div class="msg" id="m1"></div>
@@ -213,7 +215,8 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       title: 'الموظفون والسيارات', tagline: 'لموظفي SBL فقط · دقيقتان', step: 'الخطوة', of: 'من',
       offline: 'معاينة: النموذج غير مرتبط بجدول البيانات بعد، فلا تُحفظ الإجابات.',
       s1h: 'بياناتك', s1p: 'اكتب اسمك الرباعي كما هو مكتوب في الإقامة.', namePh: 'الاسم الرباعي كما في الإقامة',
-      jobPh: 'الوظيفة', jobOtherPh: 'اكتب وظيفتك', natPh: 'الجنسية', iqamaPh: 'رقم الإقامة أو الهوية (اختياري)', iqPhoto: 'صورة الإقامة', iqPhotoHint: 'التقط صورة أو اختر صورة', choose: 'رفع', change: 'تغيير', phonePh: 'رقم الجوال 05XXXXXXXX',
+      jobPh: 'الوظيفة', jobOtherPh: 'اكتب وظيفتك', natPh: 'الجنسية', iqamaPh: 'رقم الإقامة أو الهوية (اختياري)', iqPhoto: 'صورة الإقامة', iqPhotoHint: 'صوّر الإقامة أو ارفع صورتها', choose: 'رفع', shoot: 'تصوير',
+      eIqBlur: 'الصورة غير واضحة. صوّر الإقامة مرة أخرى في مكان مضيء وثبّت الجوال.', eIqDark: 'الصورة مظلمة. صوّر الإقامة في مكان مضيء.', eIqSmall: 'الصورة صغيرة. صوّر الإقامة من مسافة أقرب.', change: 'تغيير', phonePh: 'رقم الجوال 05XXXXXXXX',
       s2h: 'مكان العمل', s2p: 'المشروع الذي تعمل فيه حاليًا.', projPh: 'المشروع', projOtherPh: 'اكتب اسم المشروع أو الموقع', cityPh: 'المدينة', bossPh: 'المسؤول المباشر (اختياري)',
       s3h: 'نظام الشركة', s3p: 'لتجهيز حسابك في نظام الشركة لتسجيل الحضور ورفع الفواتير.',
       no: 'لا', yes: 'نعم', dontKnow: 'لا أعلم',
@@ -230,7 +233,7 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
   };
   var EN = {
     otherOpt: 'Other (write it)', otherProj: 'Not listed (write it)', otherCar: 'Another type', sending: 'Sending',
-    eName: 'Write your full name (at least three parts).', eJob: 'Choose your job.', eNat: 'Choose your nationality.', eIqama: 'The Iqama number has 10 digits.', eIqPhoto: 'Attach a clear photo of your Iqama.', eIqBig: 'The file is too big; choose a photo.', change: 'Change', ePhone: 'The mobile starts with 05 and has 10 digits.',
+    eName: 'Write your full name (at least three parts).', eJob: 'Choose your job.', eNat: 'Choose your nationality.', eIqama: 'The Iqama number has 10 digits.', eIqPhoto: 'Attach a clear photo of your Iqama.', eIqBig: 'The file is too big; choose a photo.', eIqBlur: 'The photo is blurry. Take it again in good light and hold the phone still.', eIqDark: 'The photo is too dark. Take it in good light.', eIqSmall: 'The photo is too small. Take it closer.', change: 'Change', ePhone: 'The mobile starts with 05 and has 10 digits.',
     eProject: 'Choose the project.', eHasCar: 'Say if you have a car.', eCar: 'Choose the car type and write its plate number.', eFleet: 'Write the company car number painted on the car, e.g. 091.', eFuel: 'Choose the fuel.', eOdo: 'Write the odometer reading in km.',
     eSend: 'It did not send. Check the internet and try again.', found: 'Found', names: { you: 'About you', work: 'Work', system: 'System', car: 'Car', done: 'Done' }
   };
@@ -290,15 +293,38 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
 
   $('name').addEventListener('input', function () { $('r-name').classList.remove('err'); });
   var iqFile = null; // { name, type, data (base64) }
-  $('iqamaPhoto').addEventListener('change', function () {
-    var f = this.files && this.files[0]; if (!f) return;
+  // Is the photo usable? Checked on the phone: size, light, and sharpness (variance of the
+  // Laplacian on a small grey copy; a blurred photo has almost no sharp edges).
+  function photoProblem(c) {
+    if (Math.min(c.width, c.height) < 450) return 'eIqSmall';
+    var w = 480, h = Math.round(c.height * w / c.width), s = document.createElement('canvas');
+    s.width = w; s.height = h; var x = s.getContext('2d'); x.drawImage(c, 0, 0, w, h);
+    var px = x.getImageData(0, 0, w, h).data, g = new Float32Array(w * h), sum = 0;
+    for (var i = 0; i < w * h; i++) { g[i] = 0.299 * px[i * 4] + 0.587 * px[i * 4 + 1] + 0.114 * px[i * 4 + 2]; sum += g[i]; }
+    if (sum / (w * h) < 45) return 'eIqDark';
+    var n = 0, m = 0, m2 = 0;
+    for (var yy = 1; yy < h - 1; yy++) for (var xx = 1; xx < w - 1; xx++) {
+      var k = yy * w + xx, l = g[k - 1] + g[k + 1] + g[k - w] + g[k + w] - 4 * g[k];
+      n++; m += l; m2 += l * l;
+    }
+    var v = m2 / n - (m / n) * (m / n);
+    window.__iqSharp = Math.round(v);
+    return v < BLUR_MIN ? 'eIqBlur' : '';
+  }
+  var BLUR_MIN = 40;
+  function pick() {
+    var f = this.files && this.files[0]; this.value = ''; if (!f) return;
     var row = $('r-iqamaPhoto'), show = function (thumb) {
       row.classList.add('has'); row.classList.remove('err');
-      $('iqPhotoName').textContent = f.name; row.querySelector('.fbtn').textContent = tx('change');
+      $('iqPhotoName').textContent = '✓ ' + tx('iqPhoto');
+      $('iqThumb').hidden = !thumb; if (thumb) $('iqThumb').src = thumb;
+    }, bad = function (key, thumb) {
+      iqFile = null; row.classList.remove('has'); row.classList.add('err');
+      $('iqPhotoName').textContent = tx(key);
       $('iqThumb').hidden = !thumb; if (thumb) $('iqThumb').src = thumb;
     };
     if (f.type === 'application/pdf') {
-      if (f.size > 6e6) { iqFile = null; row.classList.add('err'); $('iqPhotoName').textContent = tx('eIqBig'); return; }
+      if (f.size > 6e6) { bad('eIqBig', ''); return; }
       var fr = new FileReader();
       fr.onload = function () { iqFile = { name: f.name, type: f.type, data: String(fr.result).split(',')[1] }; show(''); };
       fr.readAsDataURL(f); return;
@@ -309,11 +335,15 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
       var d = c.toDataURL('image/jpeg', 0.82); URL.revokeObjectURL(url);
-      iqFile = { name: f.name.replace(/\.[^.]+$/, '') + '.jpg', type: 'image/jpeg', data: d.split(',')[1] }; show(d);
+      var problem = photoProblem(c);
+      if (problem) { bad(problem, d); return; }
+      iqFile = { name: (f.name || 'iqama').replace(/\.[^.]+$/, '') + '.jpg', type: 'image/jpeg', data: d.split(',')[1] }; show(d);
     };
-    img.onerror = function () { URL.revokeObjectURL(url); iqFile = null; row.classList.add('err'); $('iqPhotoName').textContent = tx('eIqPhoto'); };
+    img.onerror = function () { URL.revokeObjectURL(url); bad('eIqPhoto', ''); };
     img.src = url;
-  });
+  }
+  $('iqamaPhoto').addEventListener('change', pick);
+  $('iqCam').addEventListener('change', pick);
   $('job').addEventListener('change', function () { $('r-jobOther').hidden = this.value !== '__other'; $('r-job').classList.remove('err'); });
   $('project').addEventListener('change', function () { $('r-projectOther').hidden = this.value !== '__other'; $('r-project').classList.remove('err'); });
   $('car').addEventListener('change', function () { $('r-car').classList.remove('err'); });
