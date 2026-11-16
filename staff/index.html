@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-endpoint="https://script.google.com/macros/s/AKfycbxif5D66XnU95AdRyR9ZAlbnvztAVgLRo8G4Ydb9CkKYhZfFOlJzrcIyh52DDuPWWcT/exec">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>SBL Staff &amp; Vehicles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Changa:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f1ece3; --cell:#fffdf9; --line:rgba(60,45,20,.10); --field:#f3eee5; --ink:#8a6a1f;
+  --text:#141414; --muted:#6e6e73; --gold:#c9a24a; --gold2:#e8cd8c; --gold3:#b08a2e; --danger:#e5484d; --ok:#2e7d4f; --r:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;background:
+  radial-gradient(900px 500px at 15% -10%,rgba(201,162,74,.22),transparent 60%),
+  radial-gradient(700px 400px at 110% 10%,rgba(201,162,74,.10),transparent 60%),
+  linear-gradient(180deg,#ece5d9 0%,var(--bg) 40%,#f5f1ea 100%)}
+.wrap{max-width:560px;margin:0 auto;padding:28px 16px 40px}
+.top{display:flex;justify-content:flex-end;margin:0 2px 12px}
+.lang{display:flex;background:var(--cell);border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{border:0;background:transparent;color:var(--muted);font:600 13px Inter,Changa,sans-serif;padding:6px 14px;border-radius:999px;cursor:pointer}
+.lang button.sel{background:linear-gradient(160deg,var(--gold2),var(--gold3));color:#111}
+.head{background:radial-gradient(520px 260px at 0% 0%,rgba(201,162,74,.30),transparent 65%),linear-gradient(160deg,#3a342c 0%,#2a2620 55%,#221f1a 100%);
+  border-radius:24px;padding:18px;margin:0 0 24px;box-shadow:0 14px 36px rgba(60,45,20,.18);border:1px solid rgba(201,162,74,.18)}
+.hero{display:flex;align-items:center;gap:16px;margin:2px 0 18px}
+.hero img{height:62px;filter:drop-shadow(0 6px 18px rgba(201,162,74,.35))}
+.hero .k{font-size:11px;letter-spacing:.22em;color:var(--gold2);text-transform:uppercase}
+.hero h1{font-family:"Playfair Display",Georgia,serif;font-size:30px;line-height:1.05;margin:4px 0 4px;background:linear-gradient(180deg,var(--gold2),var(--gold3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .s{font-size:12px;color:#bdb6a8;letter-spacing:.04em}
+.steplbl{display:flex;justify-content:space-between;margin:0 2px 10px;font-size:12px;color:#bdb6a8}
+.steplbl b{color:#fff;font-weight:600}
+.prog{display:flex;gap:6px;margin:0 2px}
+.prog i{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.14);overflow:hidden;position:relative}
+.prog i::after{content:"";position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--gold2),var(--gold));transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.prog i.on::after{width:100%}
+.step{display:none;animation:in .45s cubic-bezier(.2,.8,.2,1)}
+.step.on{display:block}
+.step.back{animation:inb .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes in{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes inb{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+h2{font-size:24px;font-weight:700;margin:6px 6px 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:14px;margin:0 6px 16px;line-height:1.45}
+.group{background:var(--cell);border-radius:var(--r);overflow:hidden;margin-bottom:18px;border:1px solid var(--line);box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.04)}
+.glabel{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 16px 8px}
+.row{display:flex;align-items:center;gap:12px;padding:0 16px;min-height:54px;position:relative}
+.row+.row::before,.q+.row::before,.row+.q::before{content:"";position:absolute;top:0;inset-inline-start:56px;inset-inline-end:0;height:1px;background:var(--line)}
+.ico{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none;background:linear-gradient(160deg,var(--gold2),var(--gold3));color:#111}
+.ico svg{width:16px;height:16px}
+.row input,.row select{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);font:inherit;font-size:16px;padding:16px 0}
+.row input::placeholder{color:#a1a1a6}
+.row select{appearance:none;-webkit-appearance:none;cursor:pointer}
+.row select:invalid{color:#a1a1a6}
+.row .chev{color:#a1a1a6;flex:none}
+.row.err input,.row.err select{color:var(--danger)}
+.row.err .ico{background:var(--danger);color:#fff}
+.row .badge{font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:999px;flex:none}
+.badge.found{background:rgba(46,125,79,.12);color:var(--ok)}
+.badge.new{background:rgba(201,162,74,.18);color:var(--ink)}
+.q{padding:14px 16px;position:relative}
+.q .ql{font-size:15px;margin-bottom:10px;display:flex;gap:10px;align-items:center}
+.seg{display:flex;background:var(--field);border-radius:11px;padding:3px}
+.seg button{flex:1;border:0;background:transparent;color:var(--muted);font:inherit;font-size:13.5px;font-weight:500;padding:9px 6px;border-radius:9px;cursor:pointer}
+.seg button.sel{background:linear-gradient(160deg,var(--gold2),var(--gold3));color:#111;font-weight:600;box-shadow:0 2px 10px rgba(201,162,74,.3)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--field);color:var(--text);font:inherit;font-size:13.5px;padding:8px 14px;border-radius:999px;cursor:pointer}
+.chip.sel{border-color:var(--gold);color:#111;background:linear-gradient(160deg,var(--gold2),var(--gold3))}
+.q.err .seg,.q.err .chips{outline:1px solid var(--danger);outline-offset:3px;border-radius:12px}
+.bar{display:flex;gap:10px;margin-top:6px}
+.btn{flex:1;border:0;border-radius:16px;font:inherit;font-weight:600;font-size:16px;padding:16px;cursor:pointer}
+.btn:active{transform:scale(.98)}
+.btn.p{background:linear-gradient(160deg,var(--gold2),var(--gold3));color:#111;box-shadow:0 8px 24px rgba(201,162,74,.28)}
+.btn.s{background:var(--cell);color:var(--text);border:1px solid var(--line);flex:0 0 110px}
+.btn[disabled]{opacity:.6}
+.msg{color:var(--danger);font-size:13px;margin:-6px 6px 12px}
+.done{text-align:center;padding:40px 10px}
+.done .ok{width:86px;height:86px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;background:linear-gradient(160deg,var(--gold2),var(--gold3));box-shadow:0 12px 36px rgba(201,162,74,.35)}
+.done .ok svg{width:42px;height:42px;stroke:#111}
+.done h2{font-family:"Playfair Display",Georgia,serif;font-size:28px}
+.foot{text-align:center;color:#9a9aa0;font-size:11.5px;margin-top:26px;letter-spacing:.04em}
+.spin{display:inline-block;width:18px;height:18px;border:2px solid rgba(0,0,0,.25);border-top-color:#111;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px;margin-inline-end:8px}
+@keyframes sp{to{transform:rotate(360deg)}}
+[hidden]{display:none!important}
+.note{background:rgba(201,162,74,.12);border:1px solid rgba(201,162,74,.35);color:var(--ink);border-radius:14px;padding:10px 12px;font-size:13px;margin:0 0 14px}
+html[lang=ar] body{font-family:Changa,Inter,system-ui,sans-serif}
+html[lang=ar] .hero h1,html[lang=ar] .done h2{font-family:Changa,serif;font-weight:700}
+html[lang=ar] .hero .k,html[lang=ar] .glabel{letter-spacing:0}
+html[lang=ar] .row input[type=tel],html[lang=ar] .row input[inputmode=numeric],html[lang=ar] .row input[type=email]{direction:ltr;text-align:right}
+html[dir=rtl] .step{animation-name:inb}
+html[dir=rtl] .step.back{animation-name:in}
+html[dir=rtl] .chev{transform:scaleX(-1)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="lang" id="lang"><button type="button" data-l="en" class="sel">EN</button><button type="button" data-l="ar">عربي</button></div></div>
+  <header class="head">
+    <div class="hero">
+      <img src="sbl-mark-gold.png" alt="SBL">
+      <div>
+        <div class="k">Smart Building Lines</div>
+        <h1 data-t="title">Staff &amp; Vehicles</h1>
+        <div class="s" data-t="tagline">For SBL staff only · 2 minutes</div>
+      </div>
+    </div>
+    <div class="steplbl"><span id="slName">About you</span><span><span data-t="step">Step</span> <b id="slNo">1</b> <span data-t="of">of</span> 4</span></div>
+    <div class="prog"><i class="on"></i><i></i><i></i><i></i></div>
+  </header>
+
+  <div id="offline" class="note" hidden data-t="offline">Preview: the form is not connected to the sheet yet, so answers are not saved.</div>
+
+  <!-- STEP 1: about you -->
+  <section class="step on" data-name="you">
+    <h2 data-t="s1h">About you</h2>
+    <p class="sub" data-t="s1p">Start typing your name and pick it. If it is not there, write your full name.</p>
+    <div class="group">
+      <div class="row" id="r-name"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><input id="name" list="names" autocomplete="off" data-ph="namePh" placeholder="Your name"><span class="badge found" id="bFound" hidden></span><span class="badge new" id="bNew" hidden data-t="newName">New</span></div>
+      <div class="row" id="r-job"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><select id="job" required><option value="" disabled selected data-t="jobPh">Your job</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
+      <div class="row" id="r-jobOther" hidden><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><input id="jobOther" data-ph="jobOtherPh" placeholder="Write your job"></div>
+      <div class="row" id="r-nat"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg></span><select id="nationality" required><option value="" disabled selected data-t="natPh">Nationality</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
+      <div class="row" id="r-iqama"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.4 1.8-2 3-2s2.4.6 3 2"/><path d="M15 10h3M15 13h3"/></svg></span><input id="iqama" inputmode="numeric" maxlength="10" data-ph="iqamaPh" placeholder="Iqama / ID no. (optional)"></div>
+      <div class="row" id="r-phone"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></span><input id="phone" type="tel" inputmode="tel" maxlength="10" data-ph="phonePh" placeholder="Mobile 05XXXXXXXX"></div>
+    </div>
+    <datalist id="names"></datalist>
+    <div class="msg" id="m1"></div>
+    <div class="bar"><button class="btn p" data-next data-t="next">Continue</button></div>
+  </section>
+
+  <!-- STEP 2: where you work -->
+  <section class="step" data-name="work">
+    <h2 data-t="s2h">Where you work</h2>
+    <p class="sub" data-t="s2p">The project you are on now.</p>
+    <div class="group">
+      <div class="row" id="r-project"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg></span><select id="project" required><option value="" disabled selected data-t="projPh">Project</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
+      <div class="row" id="r-projectOther" hidden><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><input id="projectOther" data-ph="projOtherPh" placeholder="Write the project or site"></div>
+      <div class="row"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><select id="city" required><option value="" disabled selected data-t="cityPh">City</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
+      <div class="row"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.7c2 .6 3.5 2.2 3.5 5.3"/></svg></span><input id="boss" list="names" autocomplete="off" data-ph="bossPh" placeholder="Your direct manager (optional)"></div>
+    </div>
+    <div class="msg" id="m2"></div>
+    <div class="bar"><button class="btn s" data-back data-t="back">Back</button><button class="btn p" data-next data-t="next">Continue</button></div>
+  </section>
+
+  <!-- STEP 3: phone and the company system -->
+  <section class="step" data-name="system">
+    <h2 data-t="s3h">The company system</h2>
+    <p class="sub" data-t="s3p">So we can set you up on the SBL system for attendance and invoices.</p>
+    <div class="group">
+      <div class="q"><div class="ql" data-t="accountQ">Do you have an SBL system login?</div>
+        <div class="seg" data-k="account"><button type="button" data-v="Yes" data-t="yes">Yes</button><button type="button" data-v="No" data-t="no">No</button><button type="button" data-v="DontKnow" data-t="dontKnow">Not sure</button></div></div>
+      <div class="row"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 7l9 6 9-6"/></svg></span><input id="email" type="email" inputmode="email" data-ph="emailPh" placeholder="Email (optional)"></div>
+      <div class="q"><div class="ql" data-t="custodyQ">Do you spend from company cash (custody)?</div>
+        <div class="seg" data-k="custody"><button type="button" data-v="Yes" data-t="yes">Yes</button><button type="button" data-v="No" data-t="no">No</button></div></div>
+    </div>
+    <div class="msg" id="m3"></div>
+    <div class="bar"><button class="btn s" data-back data-t="back">Back</button><button class="btn p" data-next data-t="next">Continue</button></div>
+  </section>
+
+  <!-- STEP 4: the car -->
+  <section class="step" data-name="car">
+    <h2 data-t="s4h">Your car</h2>
+    <p class="sub" data-t="s4p">The car you use for work, if any.</p>
+    <div class="group">
+      <div class="q" id="q-hasCar"><div class="ql" data-t="hasCarQ">Do you have a car for work?</div>
+        <div class="chips" data-k="hasCar"><button type="button" class="chip" data-v="Company" data-t="company">Company car</button><button type="button" class="chip" data-v="Own" data-t="own">My own car</button><button type="button" class="chip" data-v="Hired" data-t="hired">Hired car</button><button type="button" class="chip" data-v="None" data-t="noCar">No car</button></div></div>
+    </div>
+    <div id="carBox" hidden>
+      <div class="group">
+        <div class="row" id="r-car"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14v-5l-2-5H7l-2 5z"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/><path d="M5 12h14"/></svg></span><select id="car" required><option value="" disabled selected data-t="carPh">Car type</option></select><span class="chev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
+        <div class="row" id="r-plate"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg></span><input id="plate" maxlength="20" data-ph="platePh" placeholder="Plate number, e.g. 3456 JKB"></div>
+        <div class="row" id="r-fleet"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></span><input id="fleet" maxlength="10" inputmode="numeric" data-ph="fleetPh" placeholder="Company car number, e.g. 091"></div>
+        <div class="q" id="q-fuel"><div class="ql" data-t="fuelQ">Fuel</div>
+          <div class="seg" data-k="fuel"><button type="button" data-v="Diesel" data-t="diesel">Diesel</button><button type="button" data-v="Petrol91" data-t="p91">Petrol 91</button><button type="button" data-v="Petrol95" data-t="p95">Petrol 95</button></div></div>
+        <div class="q"><div class="ql" data-t="fuelPayQ">How do you pay for fuel?</div>
+          <div class="chips" data-k="fuelPay"><button type="button" class="chip" data-v="Aldrees" data-t="aldrees">Aldrees card</button><button type="button" class="chip" data-v="Custody" data-t="fromCustody">From custody</button><button type="button" class="chip" data-v="OwnPocket" data-t="ownPocket">I pay and claim</button><button type="button" class="chip" data-v="Other" data-t="other">Other</button></div></div>
+        <div class="row" id="r-odo"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l4-4"/><path d="M3.5 18a9 9 0 1 1 17 0"/></svg></span><input id="odometer" inputmode="numeric" maxlength="7" data-ph="odoPh" placeholder="Odometer now, km"></div>
+      </div>
+    </div>
+    <div class="group">
+      <div class="row"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><input id="notes" maxlength="300" data-ph="notesPh" placeholder="Anything else (optional)"></div>
+    </div>
+    <div class="msg" id="m4"></div>
+    <div class="bar"><button class="btn s" data-back data-t="back">Back</button><button class="btn p" id="send" data-t="send">Send</button></div>
+  </section>
+
+  <section class="step" data-name="done">
+    <div class="done">
+      <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg></div>
+      <h2 data-t="thanks">Thank you</h2>
+      <p class="sub" id="doneText"></p>
+      <div class="bar"><button class="btn s" style="flex:1" id="again" data-t="again">Fill in for someone else</button></div>
+    </div>
+  </section>
+
+  <div class="foot">Smart Building Lines Contracting Co. · Riyadh</div>
+</div>
+
+<script>
+(function () {
+  var ENDPOINT = document.documentElement.dataset.endpoint || '';
+  var T = {
+    en: {}, // English is the page as written
+    ar: {
+      title: 'الموظفون والسيارات', tagline: 'لموظفي SBL فقط · دقيقتان', step: 'الخطوة', of: 'من',
+      offline: 'معاينة: النموذج غير مرتبط بجدول البيانات بعد، فلا تُحفظ الإجابات.',
+      s1h: 'بياناتك', s1p: 'ابدأ بكتابة اسمك ثم اختره من القائمة، وإن لم تجده فاكتب اسمك الكامل.', namePh: 'الاسم', newName: 'جديد',
+      jobPh: 'الوظيفة', jobOtherPh: 'اكتب وظيفتك', natPh: 'الجنسية', iqamaPh: 'رقم الإقامة أو الهوية (اختياري)', phonePh: 'رقم الجوال 05XXXXXXXX',
+      s2h: 'مكان العمل', s2p: 'المشروع الذي تعمل فيه حاليًا.', projPh: 'المشروع', projOtherPh: 'اكتب اسم المشروع أو الموقع', cityPh: 'المدينة', bossPh: 'المسؤول المباشر (اختياري)',
+      s3h: 'نظام الشركة', s3p: 'لتجهيز حسابك في نظام الشركة لتسجيل الحضور ورفع الفواتير.',
+      no: 'لا', yes: 'نعم', dontKnow: 'لا أعلم',
+      accountQ: 'هل لديك حساب في نظام SBL؟', emailPh: 'البريد الإلكتروني (اختياري)', custodyQ: 'هل تصرف من عهدة نقدية للشركة؟',
+      s4h: 'السيارة', s4p: 'السيارة التي تستخدمها في العمل، إن وُجدت.', hasCarQ: 'هل لديك سيارة للعمل؟', company: 'سيارة الشركة', own: 'سيارتي الخاصة', hired: 'سيارة مستأجرة', noCar: 'لا توجد',
+      carPh: 'نوع السيارة', platePh: 'رقم اللوحة، مثل 3456 JKB', fleetPh: 'رقم السيارة في الشركة، مثل 091', fuelQ: 'نوع الوقود', diesel: 'ديزل', p91: 'بنزين 91', p95: 'بنزين 95',
+      fuelPayQ: 'طريقة دفع الوقود', aldrees: 'بطاقة الدريس', fromCustody: 'من العهدة', ownPocket: 'أدفع ثم أطالب', other: 'أخرى',
+      odoPh: 'قراءة العداد الآن (كم)', notesPh: 'ملاحظات أخرى (اختياري)', back: 'رجوع', next: 'التالي', send: 'إرسال', sending: 'جارٍ الإرسال',
+      thanks: 'شكرًا لك', again: 'تعبئة البيانات لشخص آخر', otherOpt: 'أخرى (اكتبها)', otherProj: 'غير موجود (اكتبه)', otherCar: 'نوع آخر',
+      eName: 'اكتب اسمك.', eJob: 'اختر وظيفتك.', eNat: 'اختر الجنسية.', eIqama: 'رقم الإقامة مكوّن من 10 أرقام.', ePhone: 'رقم الجوال يبدأ بـ 05 ومكوّن من 10 أرقام.',
+      eProject: 'اختر المشروع.', eHasCar: 'حدّد ما إذا كانت لديك سيارة.', eCar: 'اختر نوع السيارة واكتب رقم لوحتها.', eFleet: 'اكتب رقم السيارة في الشركة المكتوب عليها، مثل 091.', eFuel: 'اختر نوع الوقود.', eOdo: 'اكتب قراءة العداد بالكيلومتر.',
+      eSend: 'لم تُرسل البيانات. تحقّق من الاتصال بالإنترنت وأعد المحاولة.', found: 'موجود', names: { you: 'بياناتك', work: 'مكان العمل', system: 'النظام', car: 'السيارة', done: 'تم' }
+    }
+  };
+  var EN = {
+    otherOpt: 'Other (write it)', otherProj: 'Not listed (write it)', otherCar: 'Another type', sending: 'Sending',
+    eName: 'Write your name.', eJob: 'Choose your job.', eNat: 'Choose your nationality.', eIqama: 'The Iqama number has 10 digits.', ePhone: 'The mobile starts with 05 and has 10 digits.',
+    eProject: 'Choose the project.', eHasCar: 'Say if you have a car.', eCar: 'Choose the car type and write its plate number.', eFleet: 'Write the company car number painted on the car, e.g. 091.', eFuel: 'Choose the fuel.', eOdo: 'Write the odometer reading in km.',
+    eSend: 'It did not send. Check the internet and try again.', found: 'Found', names: { you: 'About you', work: 'Work', system: 'System', car: 'Car', done: 'Done' }
+  };
+  // Lists until the sheet answers (and in a preview): no names, only the general lists.
+  var L = {
+    employees: [],
+    jobs: ['Site Engineer', 'Civil Engineer', 'Project Manager', 'Foreman / Supervisor', 'Team Leader', 'Technician', 'Rigger', 'QC Technician', 'Driver', 'Equipment Operator', 'Labourer', 'Office / Admin'],
+    nationalities: ['Saudi', 'Sudanese', 'Pakistani', 'Indian', 'Egyptian', 'Yemeni', 'Bangladeshi', 'Nepali', 'Filipino'],
+    projects: [], cities: ['Riyadh', 'Hail', 'Bisha', 'Jeddah', 'Dammam', 'Makkah', 'Madinah', 'Abha', 'Tabuk'], cars: []
+  };
+  var $ = function (id) { return document.getElementById(id); };
+  var lang = 'en', step = 0, val = {}, byName = {};
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var orig = {};
+  document.querySelectorAll('[data-t]').forEach(function (el) { orig[el.dataset.t] = el.textContent; });
+  document.querySelectorAll('[data-ph]').forEach(function (el) { orig['ph:' + el.dataset.ph] = el.placeholder; });
+  var tx = function (k) { return lang === 'ar' ? (T.ar[k] || EN[k] || orig[k] || k) : (EN[k] || orig[k] || k); };
+
+  function setLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+    document.querySelectorAll('#lang button').forEach(function (b) { b.classList.toggle('sel', b.dataset.l === l); });
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = l === 'ar' ? (T.ar[el.dataset.t] || orig[el.dataset.t]) : orig[el.dataset.t]; });
+    document.querySelectorAll('[data-ph]').forEach(function (el) { el.placeholder = l === 'ar' ? (T.ar[el.dataset.ph] || orig['ph:' + el.dataset.ph]) : orig['ph:' + el.dataset.ph]; });
+    document.querySelectorAll('option[data-other]').forEach(function (o) { o.textContent = tx(o.dataset.other); });
+    $('slName').textContent = (lang === 'ar' ? T.ar.names : EN.names)[steps[step].dataset.name];
+    try { localStorage.setItem('sbl-staff-lang', l); } catch (e) {}
+  }
+
+  function fill(sel, items, otherKey) {
+    var keep = sel.querySelector('option[disabled]');
+    sel.innerHTML = ''; sel.appendChild(keep);
+    items.forEach(function (t) { var o = document.createElement('option'); o.value = t; o.textContent = t; sel.appendChild(o); });
+    if (otherKey) { var o = document.createElement('option'); o.value = '__other'; o.dataset.other = otherKey; o.textContent = tx(otherKey); sel.appendChild(o); }
+  }
+  function useLists(l) {
+    L = l;
+    byName = {};
+    var dl = $('names'); dl.innerHTML = '';
+    L.employees.forEach(function (e) {
+      var o = document.createElement('option'); o.value = e.name; o.label = [e.code, e.ar].filter(Boolean).join(' · '); dl.appendChild(o);
+      byName[e.name.trim().toLowerCase()] = e;
+    });
+    fill($('job'), L.jobs, 'otherOpt');
+    fill($('nationality'), L.nationalities, 'otherOpt');
+    fill($('project'), L.projects, 'otherProj');
+    fill($('city'), L.cities, 'otherOpt');
+    var car = $('car'), keep = car.querySelector('option[disabled]');
+    car.innerHTML = ''; car.appendChild(keep);
+    L.cars.forEach(function (c, i) { var o = document.createElement('option'); o.value = String(i); o.textContent = c.label; car.appendChild(o); });
+    var oc = document.createElement('option'); oc.value = '__other'; oc.dataset.other = 'otherCar'; oc.textContent = tx('otherCar'); car.appendChild(oc);
+  }
+  useLists(L);
+  if (ENDPOINT) {
+    fetch(ENDPOINT + '?lists=1', { credentials: 'omit', redirect: 'follow' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (j && j.employees) useLists(j); })
+      .catch(function () { $('offline').hidden = false; });
+  } else {
+    $('offline').hidden = false;
+  }
+
+  $('name').addEventListener('input', function () {
+    var v = this.value.trim(), e = byName[v.toLowerCase()];
+    $('bFound').hidden = !e; $('bNew').hidden = !!e || v.length < 3;
+    if (e) $('bFound').textContent = '✓ ' + (e.code || tx('found'));
+    $('r-name').classList.remove('err');
+  });
+  $('job').addEventListener('change', function () { $('r-jobOther').hidden = this.value !== '__other'; $('r-job').classList.remove('err'); });
+  $('project').addEventListener('change', function () { $('r-projectOther').hidden = this.value !== '__other'; $('r-project').classList.remove('err'); });
+  $('car').addEventListener('change', function () { $('r-car').classList.remove('err'); });
+  document.querySelectorAll('[data-k]').forEach(function (g) {
+    g.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button'); if (!b) return;
+      g.querySelectorAll('button').forEach(function (x) { x.classList.toggle('sel', x === b); });
+      val[g.dataset.k] = b.dataset.v;
+      if (g.dataset.k === 'hasCar') {
+        $('carBox').hidden = b.dataset.v === 'None';
+        // The company number is painted on company cars only.
+        $('r-fleet').hidden = b.dataset.v !== 'Company';
+      }
+      var q = g.closest('.q'); if (q) q.classList.remove('err');
+    });
+  });
+
+  function err(id, on) { $(id).classList.toggle('err', !!on); return on ? 1 : 0; }
+  function check(i) {
+    var bad = 0, first = '';
+    var note = function (k) { if (!first) first = k; };
+    if (i === 0) {
+      if (err('r-name', $('name').value.trim().length < 3)) note('eName');
+      if (err('r-job', !$('job').value || ($('job').value === '__other' && !$('jobOther').value.trim()))) note('eJob');
+      if (err('r-nat', !$('nationality').value)) note('eNat');
+      var iq = $('iqama').value.trim();
+      if (err('r-iqama', iq && !/^[12]\d{9}$/.test(iq))) note('eIqama');
+      if (err('r-phone', !/^05\d{8}$/.test($('phone').value.trim()))) note('ePhone');
+    }
+    if (i === 1 && err('r-project', !$('project').value || ($('project').value === '__other' && !$('projectOther').value.trim()))) note('eProject');
+    
+    if (i === 3) {
+      if (err('q-hasCar', !val.hasCar)) note('eHasCar');
+      if (val.hasCar && val.hasCar !== 'None') {
+        if (err('r-car', !$('car').value) | err('r-plate', $('plate').value.trim().length < 4)) note('eCar');
+        if (err('r-fleet', val.hasCar === 'Company' && !/^\d{1,4}$/.test($('fleet').value.trim()))) note('eFleet');
+        if (err('q-fuel', !val.fuel)) note('eFuel');
+        if (err('r-odo', !/^\d{1,7}$/.test($('odometer').value.trim()))) note('eOdo');
+      }
+    }
+    $('m' + (i + 1)).textContent = first ? tx(first) : '';
+    bad = first ? 1 : 0;
+    return !bad;
+  }
+  function go(n, back) {
+    steps[step].classList.remove('on', 'back');
+    step = n;
+    steps[step].classList.add('on'); if (back) steps[step].classList.add('back');
+    document.querySelectorAll('.prog i').forEach(function (p, k) { p.classList.toggle('on', k <= Math.min(step, 3)); });
+    $('slNo').textContent = String(Math.min(step + 1, 4));
+    $('slName').textContent = (lang === 'ar' ? T.ar.names : EN.names)[steps[step].dataset.name];
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.querySelectorAll('[data-next]').forEach(function (b) { b.addEventListener('click', function () { if (check(step)) go(step + 1); }); });
+  document.querySelectorAll('[data-back]').forEach(function (b) { b.addEventListener('click', function () { go(step - 1, true); }); });
+
+  $('send').addEventListener('click', function () {
+    if (!check(3)) return;
+    var name = $('name').value.trim(), e = byName[name.toLowerCase()], ci = $('car').value, car = L.cars[Number(ci)], noCar = val.hasCar === 'None';
+    var data = {
+      name: name, code: e ? e.code : '', inSystem: e ? 'Yes' : 'No (new)',
+      job: $('job').value === '__other' ? $('jobOther').value.trim() : $('job').value,
+      nationality: $('nationality').value === '__other' ? 'Other' : $('nationality').value,
+      iqama: $('iqama').value.trim(), phone: $('phone').value.trim(),
+      project: $('project').value === '__other' ? $('projectOther').value.trim() : $('project').value,
+      city: $('city').value === '__other' ? 'Other' : $('city').value, boss: $('boss').value.trim(),
+      account: val.account || '', email: $('email').value.trim(), custody: val.custody || '',
+      hasCar: val.hasCar || '', car: noCar ? '' : (ci === '__other' ? 'Other' : (car ? car.label : '')),
+      plate: noCar ? '' : $('plate').value.trim(), fleet: val.hasCar === 'Company' ? $('fleet').value.trim() : '', fuel: noCar ? '' : (val.fuel || ''), fuelPay: noCar ? '' : (val.fuelPay || ''),
+      odometer: noCar ? '' : $('odometer').value.trim(), notes: $('notes').value.trim(), lang: lang
+    };
+    var btn = this; btn.disabled = true; btn.innerHTML = '<span class="spin"></span>' + tx('sending');
+    var done = function () { $('doneText').textContent = data.name + ' · ' + data.project + (data.car ? ' · ' + data.car : ''); go(4); };
+    var fail = function () { btn.disabled = false; btn.textContent = tx('send'); $('m4').textContent = tx('eSend'); };
+    if (!ENDPOINT) { setTimeout(done, 400); return; } // preview: nothing is sent
+    fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data), credentials: 'omit', redirect: 'follow' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (j && j.ok) done(); else fail(); })
+      .catch(fail);
+  });
+  $('again').addEventListener('click', function () { location.reload(); });
+
+  document.querySelectorAll('#lang button').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.l); }); });
+  var saved = null; try { saved = localStorage.getItem('sbl-staff-lang'); } catch (e) {}
+  setLang(saved || ((navigator.language || '').indexOf('ar') === 0 ? 'ar' : 'en'));
+})();
+</script>
+</body>
+</html>
