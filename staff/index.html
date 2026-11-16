@@ -392,7 +392,12 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
     if (!ENDPOINT) { setTimeout(done, 400); return; } // preview: nothing is sent
     fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data), credentials: 'omit', redirect: 'follow' })
       .then(function (r) { return r.json(); })
-      .then(function (j) { if (j && j.ok) done(); else fail(); })
+      .then(function (j) {
+        if (!(j && j.ok)) return fail();
+        // The Iqama is read on the server after this; the person does not wait for it.
+        if (j.read) fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'read', token: j.read }), credentials: 'omit', keepalive: true }).catch(function () {});
+        done();
+      })
       .catch(fail);
   });
   $('again').addEventListener('click', function () { location.reload(); });
