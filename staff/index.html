@@ -374,7 +374,21 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
     }
     var img = new Image(), url = URL.createObjectURL(f);
     img.onload = function () { URL.revokeObjectURL(url); keep(img, img.width, img.height, f.name); };
-    img.onerror = function () { URL.revokeObjectURL(url); bad('eIqPhoto', ''); };
+    img.onerror = function () {
+      URL.revokeObjectURL(url);
+      // HEIC/HEIF (some iPhone and Samsung photos): the browser cannot show it, the AI can read it.
+      if (/hei[cf]/i.test(f.type) || /\.hei[cf]$/i.test(f.name || '')) {
+        if (f.size > 6e6) { bad('eIqBig', ''); return; }
+        var fr2 = new FileReader();
+        fr2.onload = function () {
+          var mime = /heif/i.test(f.type || f.name) ? 'image/heif' : 'image/heic';
+          iqFile = { name: f.name, type: mime, data: String(fr2.result).split(',')[1] }; show('');
+          checkData(iqFile.data, mime);
+        };
+        fr2.readAsDataURL(f); return;
+      }
+      bad('eIqPhoto', '');
+    };
     img.src = url;
   }
   function keep(src, sw, sh, name, sx, sy) {
@@ -394,11 +408,14 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
   // If the check itself cannot run, the photo is kept and the office sees it in the sheet.
   var iqCheck = '', iqSeq = 0;
   function isIqama(c) {
-    if (!ENDPOINT) return;
-    var row = $('r-iqamaPhoto'), seq = ++iqSeq;
-    var k = Math.min(1, 640 / Math.max(c.width, c.height)), s2 = document.createElement('canvas');
+    var k = Math.min(1, 1024 / Math.max(c.width, c.height)), s2 = document.createElement('canvas');
     s2.width = Math.round(c.width * k); s2.height = Math.round(c.height * k);
     s2.getContext('2d').drawImage(c, 0, 0, s2.width, s2.height);
+    checkData(s2.toDataURL('image/jpeg', 0.75).split(',')[1], 'image/jpeg');
+  }
+  function checkData(b64, mime) {
+    if (!ENDPOINT) return;
+    var row = $('r-iqamaPhoto'), seq = ++iqSeq;
     iqCheck = 'pending'; row.classList.add('scanning'); $('iqPhotoName').textContent = tx('iqScan');
     var end = function (ok, text) {
       if (seq !== iqSeq) return;
@@ -407,7 +424,7 @@ html[dir=rtl] .chev{transform:scaleX(-1)}
       else { iqFile = null; row.classList.remove('has'); row.classList.add('err'); $('iqPhotoName').textContent = text; }
     };
     fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, credentials: 'omit', redirect: 'follow',
-      body: JSON.stringify({ action: 'check', image: s2.toDataURL('image/jpeg', 0.7).split(',')[1] }) })
+      body: JSON.stringify({ action: 'check', image: b64, mime: mime }) })
       .then(function (r) { return r.json(); })
       .then(function (j) {
         if (j && j.ok && j.isId === false) end(false, tx('eNotIqama'));
