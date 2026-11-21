@@ -11,7 +11,7 @@ function card(j){const d=document.createElement('div');d.className='job';d.inner
 const isWorker=()=>WRK.some(w=>w[0]===S.position);
 function roleQs(){const acc=S.position==='Accountant',wk=isWorker();const sce=$('#qSce'),se=$('#qSoftEng'),sa=$('#qSoftAcc');if(!sce)return;
   const rf=$('#rowField'),fi=rf.querySelector('input');rf.hidden=wk;fi.required=!wk;if(wk){fi.value='';rf.classList.remove('err')}
-  $('#drop').classList.toggle('opt',wk);const dt=$('#dropT'),ds=$('#dropS');if(!S.file){dt.dataset.en=wk?'Upload your CV or a photo of your Iqama (optional)':'Upload your CV';ds.dataset.en='PDF, Word or photo · up to 10 MB';
+  const dt=$('#dropT'),ds=$('#dropS');if(!S.file){dt.dataset.en='Upload your CV';ds.dataset.en='PDF, Word or photo · up to 10 MB';
     try{dt.textContent=T(dt.dataset.en);ds.textContent=T(ds.dataset.en)}catch(e){}}
   if(wk){S.sce='';sce.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));sce.classList.remove('err');sce.hidden=true;se.hidden=true;sa.hidden=true;se.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));sa.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));S.software=[];return}
   sce.hidden=acc;se.hidden=acc;sa.hidden=!acc;if(acc){S.sce='';sce.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));sce.classList.remove('err')}
@@ -201,7 +201,7 @@ $$('select').forEach(i=>i.addEventListener('change',()=>i.closest('.row').classL
 $('#submit').onclick=()=>{
   if(PREVIEW){go(4);return}
   let ok=req(steps[3],['join'],'#m4');
-  if(!S.file&&!isWorker()){drop.classList.add('err');ok=false}
+  if(!S.file){drop.classList.add('err');ok=false}
   if(!S.decl){$('#decl').classList.add('err');ok=false}
   if(!ok){say('#m4','Please complete the highlighted fields.');return}
   const btn=$('#submit');btn.disabled=true;btn.innerHTML='<span class="spin"></span>'+T('Sending…');
@@ -219,8 +219,8 @@ $('#submit').onclick=()=>{
   };
   const failPrep=e=>{btn.disabled=false;btn.textContent=T('Submit application');say('#m4','Could not read the photo. Please try a JPG or PDF.');console.error(e)};
   // photos and "no CV" become a one-page PDF in the browser (the server takes PDF/Word only)
-  if(!S.file||/\.(jpe?g|png)$/i.test(S.file.name)){
-    const base=S.file?S.file.name.replace(/\.[^.]+$/,''):'No CV';
+  if(/\.(jpe?g|png)$/i.test(S.file.name)){
+    const base=S.file.name.replace(/\.[^.]+$/,'');
     pagePdf(S.file,[S.position,v('name'),v('phone'),new Date().toISOString().slice(0,10)]).then(b64=>send(b64,base+'.pdf','application/pdf')).catch(failPrep);return}
   const r=new FileReader();r.onload=()=>send(String(r.result).split(',')[1],S.file.name,S.file.type||'application/octet-stream');r.readAsDataURL(S.file)};
 
