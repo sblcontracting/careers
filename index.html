@@ -42,6 +42,8 @@
     <div class="jobs" id="jobsE"></div>
     <span class="tag">Technicians · 5+ years</span>
     <div class="jobs" id="jobsT"></div>
+    <span class="tag">Site workers</span>
+    <div class="jobs" id="jobsW"></div>
     <span class="tag">Office · Finance</span>
     <div class="jobs" id="jobsO"></div>
     <div class="msg" id="m1"></div>
@@ -77,8 +79,8 @@
     <p class="sub">Tell us about your background.</p>
     <div class="group">
       <label class="row"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg></span>
-        <select name="qualification" required><option value="" disabled selected hidden>Highest qualification</option><option value="Master&#39;s degree or higher">Master's degree or higher</option><option value="Bachelor&#39;s degree">Bachelor's degree</option><option value="Diploma">Diploma</option><option value="Vocational certificate">Vocational certificate</option><option value="Other">Other</option></select><span class="chev">›</span></label>
-      <label class="row"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3"/><path d="M20 4v14h-7"/></svg></span><input name="field" placeholder="Field of study, e.g. Electrical Engineering" required></label>
+        <select name="qualification" required><option value="" disabled selected hidden>Highest qualification</option><option value="Master&#39;s degree or higher">Master's degree or higher</option><option value="Bachelor&#39;s degree">Bachelor's degree</option><option value="Diploma">Diploma</option><option value="Vocational certificate">Vocational certificate</option><option value="Secondary school">Secondary school</option><option value="No formal qualification">No formal qualification</option><option value="Other">Other</option></select><span class="chev">›</span></label>
+      <label class="row" id="rowField"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3"/><path d="M20 4v14h-7"/></svg></span><input name="field" placeholder="Field of study, e.g. Electrical Engineering" required></label>
     </div>
     <div class="group">
       <div class="row"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><span class="grow">Total experience</span><div class="stepper" data-st="years"><button type="button">−</button><span>0</span><button type="button">+</button></div><span class="unit">yrs</span></div>
@@ -105,8 +107,8 @@
     <div class="drop" id="drop">
       <div class="ci"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
       <b id="dropT">Upload your CV</b>
-      <small id="dropS">PDF or Word · up to 10 MB</small>
-      <input type="file" id="cv" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+      <small id="dropS">PDF, Word or photo · up to 10 MB</small>
+      <input type="file" id="cv" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png" hidden>
     </div>
     <div class="group">
       <label class="row"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg></span><input name="salary" type="number" inputmode="numeric" min="1" placeholder="Expected monthly salary" required><span class="unit">SAR</span></label>

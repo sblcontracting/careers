@@ -1,4 +1,5 @@
 const ENG=[["Electrical Engineer","LV/MV · SBC/SEC","bolt"],["Solar PV Engineer","PVsyst · grid tie","sun"],["Civil Engineer","Site · P6 · SBC","build"],["Telecommunications Engineer","FTTx · ELV","wifi"]];
+const WRK=[["Tower Erection Worker","Steel towers · rigging","build"],["Electrical Worker","Cabling · site works","bolt"]];
 const OFF=[["Accountant","VAT · e-invoicing · ERP","cash"]];
 const TEC=[["Electrical Technician","Panels · cabling","bolt"],["Solar PV Technician","Install · O&M","sun"],["Civil Technician / Surveyor","Total Station","build"],["Telecom Technician","Splicing · OTDR","wifi"]];
 const IC={cash:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>',bolt:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',sun:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',build:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>',wifi:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a15 15 0 0 1 20 0"/><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/></svg>'};
@@ -7,13 +8,18 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 
 function card(j){const d=document.createElement('div');d.className='job';d.innerHTML=`<div class="ji">${IC[j[2]]}</div><div class="t">${j[0]}</div><div class="m">${j[1]}</div>`;
   d.onclick=()=>{$$('.job').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');S.position=j[0];roleQs();say('#m1','')};return d}
-function roleQs(){const acc=S.position==='Accountant';const sce=$('#qSce'),se=$('#qSoftEng'),sa=$('#qSoftAcc');if(!sce)return;
+const isWorker=()=>WRK.some(w=>w[0]===S.position);
+function roleQs(){const acc=S.position==='Accountant',wk=isWorker();const sce=$('#qSce'),se=$('#qSoftEng'),sa=$('#qSoftAcc');if(!sce)return;
+  const rf=$('#rowField'),fi=rf.querySelector('input');rf.hidden=wk;fi.required=!wk;if(wk){fi.value='';rf.classList.remove('err')}
+  $('#drop').classList.toggle('opt',wk);const dt=$('#dropT'),ds=$('#dropS');if(!S.file){dt.dataset.en=wk?'Upload your CV or a photo of your Iqama (optional)':'Upload your CV';ds.dataset.en='PDF, Word or photo · up to 10 MB';
+    try{dt.textContent=T(dt.dataset.en);ds.textContent=T(ds.dataset.en)}catch(e){}}
+  if(wk){S.sce='';sce.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));sce.classList.remove('err');sce.hidden=true;se.hidden=true;sa.hidden=true;se.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));sa.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));S.software=[];return}
   sce.hidden=acc;se.hidden=acc;sa.hidden=!acc;if(acc){S.sce='';sce.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));sce.classList.remove('err')}
   const off=acc?se:sa;off.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));S.software=[...(acc?sa:se).querySelectorAll('.sel')].map(x=>x.dataset.v)}
-ENG.forEach(j=>$('#jobsE').appendChild(card(j)));TEC.forEach(j=>$('#jobsT').appendChild(card(j)));OFF.forEach(j=>$('#jobsO').appendChild(card(j)));
+ENG.forEach(j=>$('#jobsE').appendChild(card(j)));TEC.forEach(j=>$('#jobsT').appendChild(card(j)));WRK.forEach(j=>$('#jobsW').appendChild(card(j)));OFF.forEach(j=>$('#jobsO').appendChild(card(j)));
 /* ?position=<English title> (from a job page) pre-selects that role */
 (function(){try{const p=new URLSearchParams(location.search).get('position');if(!p)return;
-  const all=[...ENG,...TEC,...OFF];const i=all.findIndex(j=>j[0].toLowerCase()===p.toLowerCase());if(i<0)return;
+  const all=[...ENG,...TEC,...WRK,...OFF];const i=all.findIndex(j=>j[0].toLowerCase()===p.toLowerCase());if(i<0)return;
   $$('.job')[i].click()}catch(e){}})();
 
 /* ---------- language ---------- */
@@ -21,7 +27,7 @@ const AR={
  "Smart Building Lines":"شركة خطوط البناء الذكي","Careers":"الوظائف","Contracting Co. · Riyadh, Saudi Arabia":"للمقاولات · الرياض، المملكة العربية السعودية",
  "Step":"الخطوة","of":"من","Position":"الوظيفة","About you":"بياناتك","Experience":"الخبرة","CV":"السيرة الذاتية","Done":"تم",
  "Which role?":"ما الوظيفة؟","Choose the position you are applying for.":"اختر الوظيفة التي تتقدم لها.",
- "Engineers · 7+ years in KSA":"المهندسون · خبرة ٧ سنوات فأكثر في المملكة","Office · Finance":"المكتب · المالية","Accountant":"محاسب","VAT · e-invoicing · ERP":"ضريبة القيمة المضافة · الفوترة الإلكترونية · ERP","Other ERP":"نظام ERP آخر","Fatoora (ZATCA)":"فاتورة (الزكاة والضريبة)","Technicians · 5+ years":"الفنيون · خبرة ٥ سنوات فأكثر",
+ "Engineers · 7+ years in KSA":"المهندسون · خبرة ٧ سنوات فأكثر في المملكة","Office · Finance":"المكتب · المالية","Site workers":"العمال","Tower Erection Worker":"عامل تركيب أبراج","Steel towers · rigging":"أبراج حديد · رفع وتركيب","Electrical Worker":"عامل كهرباء","Cabling · site works":"تمديد كابلات · أعمال موقع","Secondary school":"ثانوية عامة","No formal qualification":"بدون مؤهل","Upload your CV or a photo of your Iqama (optional)":"ارفع سيرتك الذاتية أو صورة الإقامة (اختياري)","PDF, Word or photo · up to 10 MB":"PDF أو Word أو صورة · حتى 10 ميجابايت","Please upload a PDF, Word file or photo.":"يرجى رفع ملف PDF أو Word أو صورة.","Could not read the photo. Please try a JPG or PDF.":"تعذّرت قراءة الصورة. جرّب صورة JPG أو ملف PDF.","Accountant":"محاسب","VAT · e-invoicing · ERP":"ضريبة القيمة المضافة · الفوترة الإلكترونية · ERP","Other ERP":"نظام ERP آخر","Fatoora (ZATCA)":"فاتورة (الزكاة والضريبة)","Technicians · 5+ years":"الفنيون · خبرة ٥ سنوات فأكثر",
  "Electrical Engineer":"مهندس كهرباء","Solar PV Engineer":"مهندس طاقة شمسية","Civil Engineer":"مهندس مدني","Telecommunications Engineer":"مهندس اتصالات",
  "Electrical Technician":"فني كهرباء","Solar PV Technician":"فني طاقة شمسية","Civil Technician / Surveyor":"فني مدني / مساح","Telecom Technician":"فني اتصالات",
  "LV/MV · SBC/SEC":"جهد منخفض ومتوسط","PVsyst · grid tie":"تصميم وربط بالشبكة","Site · P6 · SBC":"تنفيذ وإشراف · P6","FTTx · ELV":"ألياف ضوئية · تيار خفيف",
@@ -167,7 +173,7 @@ drop.onclick=()=>cv.click();
 drop.addEventListener('drop',ev=>pick(ev.dataTransfer.files[0]));
 cv.onchange=()=>pick(cv.files[0]);
 function pick(f){if(!f)return;drop.classList.remove('err');
-  if(!/\.(pdf|docx?)$/i.test(f.name)){say('#m4','Please upload a PDF or Word file.');return}
+  if(!/\.(pdf|docx?|jpe?g|png)$/i.test(f.name)){say('#m4','Please upload a PDF, Word file or photo.');return}
   if(f.size>10*1024*1024){say('#m4','The file is larger than 10 MB.');return}
   S.file=f;say('#m4','');drop.classList.add('has');$('#dropT').textContent=f.name;$('#dropS').textContent=(f.size/1024/1024).toFixed(2)+' MB · '+T('tap to change')}
 
@@ -187,7 +193,7 @@ $$('[data-next]').forEach(b=>b.onclick=()=>{
   if(PREVIEW){go(cur+1);return}
   if(cur===0&&!S.position){say('#m1','Please choose a position.');return}
   if(cur===1&&!req(steps[1],['nationality','residency'],'#m2'))return;
-  if(cur===2&&!req(steps[2],S.position==='Accountant'?['licence']:['sce','licence'],'#m3'))return;
+  if(cur===2&&!req(steps[2],(S.position==='Accountant'||isWorker())?['licence']:['sce','licence'],'#m3'))return;
   go(cur+1)});
 $$('input').forEach(i=>i.addEventListener('input',()=>i.closest('.row')&&i.closest('.row').classList.remove('err')));
 $$('select').forEach(i=>i.addEventListener('change',()=>i.closest('.row').classList.remove('err')));
@@ -195,22 +201,52 @@ $$('select').forEach(i=>i.addEventListener('change',()=>i.closest('.row').classL
 $('#submit').onclick=()=>{
   if(PREVIEW){go(4);return}
   let ok=req(steps[3],['join'],'#m4');
-  if(!S.file){drop.classList.add('err');ok=false}
+  if(!S.file&&!isWorker()){drop.classList.add('err');ok=false}
   if(!S.decl){$('#decl').classList.add('err');ok=false}
   if(!ok){say('#m4','Please complete the highlighted fields.');return}
   const btn=$('#submit');btn.disabled=true;btn.innerHTML='<span class="spin"></span>'+T('Sending…');
   const v=n=>(document.querySelector(`[name="${n}"]`).value||'').trim();
-  const r=new FileReader();r.onload=()=>{
+  const send=(b64,fname,mime)=>{
     const data={position:S.position,name:v('name'),phone:v('phone'),email:v('email'),city:v('city'),nationality:S.nationality==='Non-Saudi'?(v('country')||'Non-Saudi'):S.nationality,residency:S.residency,
       qualification:v('qualification'),field:v('field'),years:S.years,ksaYears:S.ksaYears,sce:S.sce,licence:S.licence,software:S.software.join(', '),
-      salary:v('salary'),join:S.join,linkedin:v('linkedin'),website:v('website'),fileName:S.file.name,mime:S.file.type||'application/octet-stream',file:String(r.result).split(',')[1]};
+      salary:v('salary'),join:S.join,linkedin:v('linkedin'),website:v('website'),fileName:fname||'',mime:mime||'',file:b64};
     const fail=e=>{btn.disabled=false;btn.textContent=T('Submit application');say('#m4','Sending failed. Please try again.');console.error(e)};
     if(GAS){google.script.run.withSuccessHandler(()=>go(4)).withFailureHandler(fail).submitApplication(data)}
     else if(ENDPOINT){
       fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data),credentials:'omit',redirect:'follow'})
         .then(r=>r.json()).then(j=>j&&j.ok?go(4):fail(j&&j.error)).catch(fail)}
     else{setTimeout(()=>go(4),900)} // design preview only
-  };r.readAsDataURL(S.file)};
+  };
+  const failPrep=e=>{btn.disabled=false;btn.textContent=T('Submit application');say('#m4','Could not read the photo. Please try a JPG or PDF.');console.error(e)};
+  // photos and "no CV" become a one-page PDF in the browser (the server takes PDF/Word only)
+  if(!S.file||/\.(jpe?g|png)$/i.test(S.file.name)){
+    const base=S.file?S.file.name.replace(/\.[^.]+$/,''):'No CV';
+    pagePdf(S.file,[S.position,v('name'),v('phone'),new Date().toISOString().slice(0,10)]).then(b64=>send(b64,base+'.pdf','application/pdf')).catch(failPrep);return}
+  const r=new FileReader();r.onload=()=>send(String(r.result).split(',')[1],S.file.name,S.file.type||'application/octet-stream');r.readAsDataURL(S.file)};
+
+/* one-page PDF from a photo (or a 'No CV' card), built in the browser */
+function pdfFromJpeg(jpg,w,h){const enc=new TextEncoder(),parts=[],off=[];let len=0;
+  const push=x=>{const b=typeof x==='string'?enc.encode(x):x;parts.push(b);len+=b.length};
+  const obj=(n,f)=>{off[n]=len;push(n+' 0 obj\n');f();push('\nendobj\n')};
+  const sc=Math.min(555/w,802/h),dw=w*sc,dh=h*sc,x=(595-dw)/2,y=842-20-dh;
+  push('%PDF-1.4\n');
+  obj(1,()=>push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2,()=>push('<< /Type /Pages /Kids [3 0 R] /Count 1 >>'));
+  obj(3,()=>push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>'));
+  obj(4,()=>{push('<< /Type /XObject /Subtype /Image /Width '+w+' /Height '+h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>\nstream\n');push(jpg);push('\nendstream')});
+  const c='q '+dw.toFixed(2)+' 0 0 '+dh.toFixed(2)+' '+x.toFixed(2)+' '+y.toFixed(2)+' cm /Im0 Do Q';
+  obj(5,()=>push('<< /Length '+c.length+' >>\nstream\n'+c+'\nendstream'));
+  const xo=len;push('xref\n0 6\n0000000000 65535 f \n'+[1,2,3,4,5].map(n=>String(off[n]).padStart(10,'0')+' 00000 n \n').join('')+'trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n'+xo+'\n%%EOF');
+  const out=new Uint8Array(len);let o=0;parts.forEach(b=>{out.set(b,o);o+=b.length});return out}
+async function pagePdf(file,lines){const c=document.createElement('canvas'),x=c.getContext('2d');
+  if(file){const u=URL.createObjectURL(file);const im=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=u});
+    const k=Math.min(1,1800/Math.max(im.naturalWidth,im.naturalHeight));c.width=Math.max(1,Math.round(im.naturalWidth*k));c.height=Math.max(1,Math.round(im.naturalHeight*k));
+    x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u)}
+  else{c.width=1240;c.height=640;x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.fillStyle='#b08a2e';x.fillRect(0,0,c.width,14);
+    x.fillStyle='#141414';x.font='600 56px Changa, Tahoma, sans-serif';x.fillText('No CV uploaded / لم يرفق سيرة ذاتية',60,130);
+    x.font='40px Changa, Tahoma, sans-serif';lines.forEach((t,i)=>x.fillText(String(t||''),60,240+i*80))}
+  const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));const jpg=new Uint8Array(await blob.arrayBuffer());
+  const pdf=pdfFromJpeg(jpg,c.width,c.height);let bin='';for(let i=0;i<pdf.length;i+=32768)bin+=String.fromCharCode.apply(null,pdf.subarray(i,i+32768));return btoa(bin)}
 
 $$('option').forEach(o=>{if(!o.hasAttribute('value'))o.value=o.textContent.trim()});
 $$('#lang button').forEach(b=>b.onclick=()=>applyLang(b.dataset.l));
