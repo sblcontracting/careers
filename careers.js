@@ -1,15 +1,19 @@
 const ENG=[["Electrical Engineer","LV/MV · SBC/SEC","bolt"],["Solar PV Engineer","PVsyst · grid tie","sun"],["Civil Engineer","Site · P6 · SBC","build"],["Telecommunications Engineer","FTTx · ELV","wifi"]];
+const OFF=[["Accountant","VAT · e-invoicing · ERP","cash"]];
 const TEC=[["Electrical Technician","Panels · cabling","bolt"],["Solar PV Technician","Install · O&M","sun"],["Civil Technician / Surveyor","Total Station","build"],["Telecom Technician","Splicing · OTDR","wifi"]];
-const IC={bolt:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',sun:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',build:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>',wifi:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a15 15 0 0 1 20 0"/><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/></svg>'};
+const IC={cash:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>',bolt:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',sun:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',build:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>',wifi:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a15 15 0 0 1 20 0"/><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/></svg>'};
 const S={position:"",nationality:"",residency:"",sce:"",licence:"",software:[],join:"",years:0,ksaYears:0,decl:false,file:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 
 function card(j){const d=document.createElement('div');d.className='job';d.innerHTML=`<div class="ji">${IC[j[2]]}</div><div class="t">${j[0]}</div><div class="m">${j[1]}</div>`;
-  d.onclick=()=>{$$('.job').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');S.position=j[0];say('#m1','')};return d}
-ENG.forEach(j=>$('#jobsE').appendChild(card(j)));TEC.forEach(j=>$('#jobsT').appendChild(card(j)));
+  d.onclick=()=>{$$('.job').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');S.position=j[0];roleQs();say('#m1','')};return d}
+function roleQs(){const acc=S.position==='Accountant';const sce=$('#qSce'),se=$('#qSoftEng'),sa=$('#qSoftAcc');if(!sce)return;
+  sce.hidden=acc;se.hidden=acc;sa.hidden=!acc;if(acc){S.sce='';sce.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));sce.classList.remove('err')}
+  const off=acc?se:sa;off.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));S.software=[...(acc?sa:se).querySelectorAll('.sel')].map(x=>x.dataset.v)}
+ENG.forEach(j=>$('#jobsE').appendChild(card(j)));TEC.forEach(j=>$('#jobsT').appendChild(card(j)));OFF.forEach(j=>$('#jobsO').appendChild(card(j)));
 /* ?position=<English title> (from a job page) pre-selects that role */
 (function(){try{const p=new URLSearchParams(location.search).get('position');if(!p)return;
-  const all=[...ENG,...TEC];const i=all.findIndex(j=>j[0].toLowerCase()===p.toLowerCase());if(i<0)return;
+  const all=[...ENG,...TEC,...OFF];const i=all.findIndex(j=>j[0].toLowerCase()===p.toLowerCase());if(i<0)return;
   $$('.job')[i].click()}catch(e){}})();
 
 /* ---------- language ---------- */
@@ -17,7 +21,7 @@ const AR={
  "Smart Building Lines":"شركة خطوط البناء الذكي","Careers":"الوظائف","Contracting Co. · Riyadh, Saudi Arabia":"للمقاولات · الرياض، المملكة العربية السعودية",
  "Step":"الخطوة","of":"من","Position":"الوظيفة","About you":"بياناتك","Experience":"الخبرة","CV":"السيرة الذاتية","Done":"تم",
  "Which role?":"ما الوظيفة؟","Choose the position you are applying for.":"اختر الوظيفة التي تتقدم لها.",
- "Engineers · 7+ years in KSA":"المهندسون · خبرة ٧ سنوات فأكثر في المملكة","Technicians · 5+ years":"الفنيون · خبرة ٥ سنوات فأكثر",
+ "Engineers · 7+ years in KSA":"المهندسون · خبرة ٧ سنوات فأكثر في المملكة","Office · Finance":"المكتب · المالية","Accountant":"محاسب","VAT · e-invoicing · ERP":"ضريبة القيمة المضافة · الفوترة الإلكترونية · ERP","Other ERP":"نظام ERP آخر","Fatoora (ZATCA)":"فاتورة (الزكاة والضريبة)","Technicians · 5+ years":"الفنيون · خبرة ٥ سنوات فأكثر",
  "Electrical Engineer":"مهندس كهرباء","Solar PV Engineer":"مهندس طاقة شمسية","Civil Engineer":"مهندس مدني","Telecommunications Engineer":"مهندس اتصالات",
  "Electrical Technician":"فني كهرباء","Solar PV Technician":"فني طاقة شمسية","Civil Technician / Surveyor":"فني مدني / مساح","Telecom Technician":"فني اتصالات",
  "LV/MV · SBC/SEC":"جهد منخفض ومتوسط","PVsyst · grid tie":"تصميم وربط بالشبكة","Site · P6 · SBC":"تنفيذ وإشراف · P6","FTTx · ELV":"ألياف ضوئية · تيار خفيف",
@@ -183,7 +187,7 @@ $$('[data-next]').forEach(b=>b.onclick=()=>{
   if(PREVIEW){go(cur+1);return}
   if(cur===0&&!S.position){say('#m1','Please choose a position.');return}
   if(cur===1&&!req(steps[1],['nationality','residency'],'#m2'))return;
-  if(cur===2&&!req(steps[2],['sce','licence'],'#m3'))return;
+  if(cur===2&&!req(steps[2],S.position==='Accountant'?['licence']:['sce','licence'],'#m3'))return;
   go(cur+1)});
 $$('input').forEach(i=>i.addEventListener('input',()=>i.closest('.row')&&i.closest('.row').classList.remove('err')));
 $$('select').forEach(i=>i.addEventListener('change',()=>i.closest('.row').classList.remove('err')));
