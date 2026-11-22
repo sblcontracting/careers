@@ -27,7 +27,7 @@ body{min-height:100vh;background:
 .head .prog i{background:rgba(255,255,255,.14)}
 
 /* language switch */
-.top{display:flex;justify-content:flex-end;margin:0 2px 12px}
+.top{display:flex;justify-content:flex-end;margin:0 2px 12px;direction:ltr}
 .lang{display:flex;background:var(--cell);border:1px solid var(--line);border-radius:999px;padding:3px}
 .lang button{border:0;background:transparent;color:var(--muted);font:600 13px Inter,Changa,sans-serif;padding:6px 14px;border-radius:999px;cursor:pointer;transition:background .25s,color .2s}
 .lang button.sel{background:linear-gradient(160deg,var(--gold2),var(--gold3));color:#111;-webkit-text-fill-color:#111;transition:none}
@@ -172,3 +172,4 @@ h2{font-size:24px;font-weight:700;margin:6px 6px 4px;letter-spacing:-.01em}
 .natlist[hidden]{display:none}
 #natIn::-webkit-search-cancel-button{display:none}
 .q[hidden]{display:none!important}
+html,body{overflow-x:hidden;max-width:100%}
