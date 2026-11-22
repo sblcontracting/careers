@@ -3,7 +3,7 @@ const WRK=[["Tower Erection Worker","Steel towers · rigging","build"],["Electri
 const OFF=[["Accountant","VAT · e-invoicing · ERP","cash"]];
 const TEC=[["Electrical Technician","Panels · cabling","bolt"],["Solar PV Technician","Install · O&M","sun"],["Civil Technician / Surveyor","Total Station","build"],["Telecom Technician","Splicing · OTDR","wifi"]];
 const IC={cash:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>',bolt:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',sun:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',build:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>',wifi:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a15 15 0 0 1 20 0"/><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/></svg>'};
-const S={position:"",nationality:"",residency:"",sce:"",licence:"",software:[],join:"",years:0,ksaYears:0,decl:false,file:null};
+const S={position:"",nationality:"",residency:"",sce:"",licence:"",software:[],join:"",source:"",years:0,ksaYears:0,decl:false,file:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 
 function card(j){const d=document.createElement('div');d.className='job';d.innerHTML=`<div class="ji">${IC[j[2]]}</div><div class="t">${j[0]}</div><div class="m">${j[1]}</div>`;
@@ -113,7 +113,7 @@ const AR={
  "Last step":"الخطوة الأخيرة","Upload your CV and tell us when you can start.":"ارفع سيرتك الذاتية وأخبرنا متى يمكنك المباشرة.",
  "Upload your CV":"ارفع سيرتك الذاتية","PDF or Word · up to 10 MB":"PDF أو Word · حتى ١٠ ميجابايت",
  "Expected monthly salary":"الراتب الشهري المتوقع","SAR":"ريال","LinkedIn profile (optional)":"حساب LinkedIn (اختياري)",
- "When can you join?":"متى يمكنك المباشرة؟","Immediately":"فوراً","Within 2 weeks":"خلال أسبوعين","Within 1 month":"خلال شهر","More than 1 month":"أكثر من شهر",
+ "When can you join?":"متى يمكنك المباشرة؟","How did you hear about this job?":"كيف عرفت عن هذه الوظيفة؟","Mourjan":"مرجان","Friend or colleague":"صديق أو زميل","Immediately":"فوراً","Within 2 weeks":"خلال أسبوعين","Within 1 month":"خلال شهر","More than 1 month":"أكثر من شهر",
  "I confirm that the information provided is accurate and complete.":"أقرّ بأن جميع المعلومات المقدّمة صحيحة وكاملة.",
  "Thank you":"شكراً لك","Your application has been received. Our team will review it and contact you if your profile matches the position.":"استلمنا طلبك. سيراجعه فريقنا وسنتواصل معك إذا كان ملفك مناسباً للوظيفة.",
  "© Smart Building Lines Contracting Co. · Riyadh":"© شركة خطوط البناء الذكي للمقاولات · الرياض",
@@ -158,6 +158,9 @@ function natCheck(){const i=$('#natIn');if(!i.required){i.setCustomValidity('');
   i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const f=$('#natList button');if(f)natPick(f.dataset.n)}});})();
 $$('[data-q="nationality"] .seg button').forEach(b=>b.addEventListener('click',()=>{const on=b.dataset.v==='Non-Saudi',i=$('#natIn');
   $('#natRow').hidden=!on;i.required=on;if(!on){i.value='';$('#natVal').value='';$('#natList').hidden=true;$('#natRow').classList.remove('err')}natCheck()}));
+/* source: ?src=linkedin|mourjan|google or the referring site pre-selects the answer */
+function guessSource(){try{const p=(new URLSearchParams(location.search).get('src')||'').toLowerCase(),r=(document.referrer||'').toLowerCase();
+  const t=p+' '+r;if(/linkedin|lnkd\.in/.test(t))return'LinkedIn';if(/mourjan/.test(t))return'Mourjan';if(/google\./.test(t))return'Google';}catch(e){}return''}
 $$('.q').forEach(q=>{const k=q.dataset.q,multi=q.hasAttribute('data-multi');
   q.querySelectorAll('button').forEach(b=>b.onclick=()=>{q.classList.remove('err');
     if(multi){b.classList.toggle('sel');S[k]=[...q.querySelectorAll('.sel')].map(x=>x.dataset.v)}
@@ -200,7 +203,7 @@ $$('select').forEach(i=>i.addEventListener('change',()=>i.closest('.row').classL
 
 $('#submit').onclick=()=>{
   if(PREVIEW){go(4);return}
-  let ok=req(steps[3],['join'],'#m4');
+  let ok=req(steps[3],['join','source'],'#m4');
   if(!S.file){drop.classList.add('err');ok=false}
   if(!S.decl){$('#decl').classList.add('err');ok=false}
   if(!ok){say('#m4','Please complete the highlighted fields.');return}
@@ -209,7 +212,7 @@ $('#submit').onclick=()=>{
   const send=(b64,fname,mime)=>{
     const data={position:S.position,name:v('name'),phone:v('phone'),email:v('email'),city:v('city'),nationality:S.nationality==='Non-Saudi'?(v('country')||'Non-Saudi'):S.nationality,residency:S.residency,
       qualification:v('qualification'),field:v('field'),years:S.years,ksaYears:S.ksaYears,sce:S.sce,licence:S.licence,software:S.software.join(', '),
-      salary:v('salary'),join:S.join,linkedin:v('linkedin'),website:v('website'),fileName:fname||'',mime:mime||'',file:b64};
+      salary:v('salary'),join:S.join,source:S.source,linkedin:v('linkedin'),website:v('website'),fileName:fname||'',mime:mime||'',file:b64};
     const fail=e=>{btn.disabled=false;btn.textContent=T('Submit application');say('#m4','Sending failed. Please try again.');console.error(e)};
     if(GAS){google.script.run.withSuccessHandler(()=>go(4)).withFailureHandler(fail).submitApplication(data)}
     else if(ENDPOINT){
@@ -249,6 +252,7 @@ async function pagePdf(file,lines){const c=document.createElement('canvas'),x=c.
   const pdf=pdfFromJpeg(jpg,c.width,c.height);let bin='';for(let i=0;i<pdf.length;i+=32768)bin+=String.fromCharCode.apply(null,pdf.subarray(i,i+32768));return btoa(bin)}
 
 $$('option').forEach(o=>{if(!o.hasAttribute('value'))o.value=o.textContent.trim()});
+(()=>{const g=guessSource();if(!g)return;const c=[...document.querySelectorAll('#qSource .chip')].find(x=>x.dataset.v===g);if(c)c.click()})();
 $$('#lang button').forEach(b=>b.onclick=()=>applyLang(b.dataset.l));
 let saved='en';try{saved=localStorage.getItem('sblLang')||(/^ar/i.test(navigator.language)?'ar':'en')}catch(e){}
 applyLang(saved==='ar'?'ar':'en');
